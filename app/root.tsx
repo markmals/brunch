@@ -15,6 +15,7 @@ export const meta: V2_MetaFunction = () => [
 export const links: LinksFunction = () => [
     { rel: "stylesheet", href: appStyles },
     { rel: "stylesheet", href: mapboxStyles },
+    { rel: "icon", type: "image/png", href: "favicon.png" },
 ]
 
 export default function App() {
