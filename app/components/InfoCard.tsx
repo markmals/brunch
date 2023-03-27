@@ -54,6 +54,7 @@ export function InfoCard({ mapboxToken, mapLink }: { mapboxToken: string; mapLin
             </Card>
 
             <div className="flex flex-row gap-6">
+                {/* TODO: Download iCal or Google Cal event */}
                 <button
                     className="flex w-full flex-row items-center justify-center gap-2 bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:rounded-md"
                     type="button"
