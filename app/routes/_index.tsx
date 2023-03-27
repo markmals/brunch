@@ -8,10 +8,12 @@ import type { RSVPOption } from "~/components/RSVP"
 import { RSVPBar } from "~/components/RSVP"
 
 export function loader() {
-    const mapLink = "http://maps.apple.com/?ll=30.28152,-97.68348&z=16"
+    const mapLink = "https://maps.apple.com/?daddr=1416+Berene+Ave"
     console.log(process.env.MAPBOX_TOKEN)
     return json({ mapboxToken: process.env.MAPBOX_TOKEN!, mapLink })
 }
+
+// TODO: Add dark mode
 
 export default function Index() {
     const { mapboxToken, mapLink } = useLoaderData<typeof loader>()
