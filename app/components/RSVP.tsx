@@ -28,6 +28,7 @@ export function RSVP() {
     //  - +1 y/n
     //  - +1 name
     //  - Dietary restrictions or special requests
+    // TODO: Save responses in MongoDB
 }
 
 export function RSVPBar({ value, onChange }: { value: any; onChange: (value: any) => void }) {
