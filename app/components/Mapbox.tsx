@@ -8,11 +8,10 @@ export function Map({ token }: { token: string }) {
 
     useEffect(() => {
         if (map.current) {
-            if (!marker.current) {
-                marker.current = new mapboxgl.Marker({ color: "#4f46e5" })
-                marker.current.setLngLat([-97.68353394771864, 30.28148032602474])
-                marker.current.addTo(map.current)
-            }
+            if (marker.current) return
+            marker.current = new mapboxgl.Marker({ color: "#4f46e5" })
+            marker.current.setLngLat([-97.68353394771864, 30.28148032602474])
+            marker.current.addTo(map.current)
         } else {
             map.current = new mapboxgl.Map({
                 accessToken: token,
@@ -22,6 +21,7 @@ export function Map({ token }: { token: string }) {
                 zoom: 14,
                 dragPan: false,
                 scrollZoom: false,
+                attributionControl: false,
             })
         }
     })
