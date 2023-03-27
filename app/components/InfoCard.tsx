@@ -38,7 +38,11 @@ export function InfoCard({ mapboxToken, mapLink }: { mapboxToken: string; mapLin
                         <div className="flex flex-row items-center gap-6 p-4 text-gray-500">
                             <MapPinIcon className="h-5 w-5 text-gray-500" />
                             <span className="flex flex-col">
-                                <strong className="text-black">1416 Berene Ave.</strong>
+                                <a href={mapLink}>
+                                    <strong className="text-black hover:text-indigo-700">
+                                        1416 Berene Ave.
+                                    </strong>
+                                </a>
                                 <span>Austin, TX 78721</span>
                             </span>
                         </div>
