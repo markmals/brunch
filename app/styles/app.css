@@ -5,3 +5,8 @@
 .hero {
     background-image: var(--hero-image);
 }
+
+.inner-border {
+    outline: 1px solid rgba(0, 0, 0, 0.2);
+    outline-offset: -1px;
+}
