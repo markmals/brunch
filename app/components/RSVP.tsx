@@ -40,7 +40,6 @@ export const UserContext = createContext<User | undefined>(undefined)
 export const ActionDataContext = createContext<any>(undefined)
 
 export function RSVP() {
-    // TODO: Save responses in MongoDB
     const [selectedResponse, setSelectedResponse] = useState<string | undefined>(undefined)
 
     return (
@@ -53,6 +52,7 @@ export function RSVP() {
             ) : isMaybe(selectedResponse) ? (
                 <MaybeForm />
             ) : null}
+            {/* TODO: Move submit button into here so its disabled state can be saved */}
         </RSVPBar>
     )
 }
@@ -61,9 +61,6 @@ function YesForm() {
     const user = useContext(UserContext)
     const actionData = useContext(ActionDataContext)
     const [selectedPlusOne, setSelectedPlusOne] = useState<boolean>(user?.plusOne ?? false)
-
-    // const form = useRef<HTMLFormElement>()
-    // useEffect(() => console.log(Object.fromEntries(new FormData(form.current))), [form])
 
     return (
         <div className="py-6 px-4 sm:px-6">
