@@ -14,6 +14,8 @@ export async function loader({ request }: LoaderArgs) {
     let shortCode = new URL(request.url).pathname.replace("/", "")
     let user = await db.user.findFirst({ where: { shortCode } })
 
+    console.log("load", user)
+
     if (!user) {
         return redirect(process.env.GATE_URL!)
     }
@@ -43,7 +45,7 @@ export async function action({ request }: ActionArgs) {
                 },
             })
 
-            console.log(user)
+            console.log("update", user)
 
             return json({ ok: true })
         },

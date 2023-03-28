@@ -4,7 +4,7 @@ import { CheckCircleIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/solid
 import type { User } from "@prisma/client/edge"
 import { Form } from "@remix-run/react"
 import type { ForwardRefExoticComponent, ReactNode, SVGProps } from "react"
-import { createContext, useContext, useEffect, useRef, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import { classNames } from "~/utilities/class-names"
 import { Card } from "./Card"
 
@@ -62,9 +62,8 @@ function YesForm() {
     const actionData = useContext(ActionDataContext)
     const [selectedPlusOne, setSelectedPlusOne] = useState<boolean>(user?.plusOne ?? false)
 
-    const form = useRef<HTMLFormElement>()
-
-    useEffect(() => console.log(Object.fromEntries(new FormData(form.current))), [form])
+    // const form = useRef<HTMLFormElement>()
+    // useEffect(() => console.log(Object.fromEntries(new FormData(form.current))), [form])
 
     return (
         <div className="py-6 px-4 sm:px-6">
@@ -83,11 +82,11 @@ function YesForm() {
                         </label>
                         <input
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            defaultValue={user?.name}
                             id="name"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
-                            value={user?.name}
                         />
                     </div>
 
@@ -178,7 +177,7 @@ function YesForm() {
 
                         <textarea
                             className="block w-full max-w-2xl rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                            defaultValue={""}
+                            defaultValue={user?.dietaryRestrictions ?? ""}
                             id="dietary_restrictions"
                             name="dietary_restrictions"
                             placeholder="e.g. wheat, peanuts, dairy, shrimp, soy, etc."
@@ -212,7 +211,7 @@ function NoForm() {
             <div className="mt-2 max-w-xl text-sm text-gray-500">
                 <p>{"Maybe we'll see you next time."}</p>
             </div>
-            <Form className="mt-5 w-full sm:flex sm:items-center">
+            <Form action="?/no" className="mt-5 w-full sm:flex sm:items-center" method="post">
                 <div className="flex w-full flex-col divide-y divide-black/10">
                     <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
                         <label
@@ -223,11 +222,11 @@ function NoForm() {
                         </label>
                         <input
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            defaultValue={user?.name}
                             id="name"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
-                            value={user?.name}
                         />
                     </div>
 
@@ -253,7 +252,7 @@ function MaybeForm() {
             <div className="mt-2 max-w-xl text-sm text-gray-500">
                 <p>When you know for sure, you can come back and update your response.</p>
             </div>
-            <Form className="mt-5 w-full sm:flex sm:items-center">
+            <Form action="?/maybe" className="mt-5 w-full sm:flex sm:items-center" method="post">
                 <div className="flex w-full flex-col divide-y divide-black/10">
                     <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
                         <label
@@ -264,11 +263,11 @@ function MaybeForm() {
                         </label>
                         <input
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            defaultValue={user?.name}
                             id="name"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
-                            value={user?.name}
                         />
                     </div>
 
