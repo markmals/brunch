@@ -35,6 +35,7 @@ export async function action({ request }: ActionArgs) {
     let name = data.get("name") as string | null
     invariant(name)
 
+    // FIXME: This still isn't working quite right
     let plusOne = (data.get("plus_one") as 0 | 1 | null) === 1
     if (response !== "YES") plusOne = false
 
