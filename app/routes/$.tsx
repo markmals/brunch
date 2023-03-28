@@ -1,20 +1,17 @@
+import type { Response as UserResponse } from "@prisma/client"
 import { useActionData, useLoaderData } from "@remix-run/react"
 import type { ActionArgs, LoaderArgs } from "@vercel/remix"
 import { json, redirect } from "@vercel/remix"
-import { namedAction } from "remix-utils"
+import invariant from "tiny-invariant"
 import { Header } from "~/components/Header"
 import { InfoCard } from "~/components/InfoCard"
 import { eggsBenidictMenu, Menu } from "~/components/Menu"
 import { ActionDataContext, RSVP, UserContext } from "~/components/RSVP"
 import { db } from "~/utilities/db.server"
 
-// await db.user.create({ data: { shortCode: generateShortCode(8), name: "Test User" } })
-
 export async function loader({ request }: LoaderArgs) {
     let shortCode = new URL(request.url).pathname.replace("/", "")
     let user = await db.user.findFirst({ where: { shortCode } })
-
-    console.log("load", user)
 
     if (!user) {
         return redirect(process.env.GATE_URL!)
@@ -30,26 +27,31 @@ export async function loader({ request }: LoaderArgs) {
 export async function action({ request }: ActionArgs) {
     let shortCode = new URL(request.url).pathname.replace("/", "")
 
-    return namedAction(request, {
-        async yes() {
-            let data = await request.formData()
+    let data = await request.formData()
 
-            console.log(data.get("plus_one"))
+    let response = data.get("response") as UserResponse | null
+    invariant(response)
 
-            let user = await db.user.update({
-                where: { shortCode },
-                data: {
-                    name: data.get("name") as any,
-                    plusOne: (data.get("plus_one") as any) !== 0,
-                    dietaryRestrictions: data.get("dietary_restrictions") as any,
-                },
-            })
+    let name = data.get("name") as string | null
+    invariant(name)
 
-            console.log("update", user)
+    let plusOne = (data.get("plus_one") as 0 | 1 | null) === 1
+    if (response !== "YES") plusOne = false
 
-            return json({ ok: true })
+    let dietaryRestrictions = (data.get("dietary_restrictions") as string | null) ?? ""
+    if (response !== "YES") dietaryRestrictions = ""
+
+    await db.user.update({
+        where: { shortCode },
+        data: {
+            response,
+            name,
+            plusOne,
+            dietaryRestrictions,
         },
     })
+
+    return json({ ok: true })
 }
 
 // TODO: Add dark mode

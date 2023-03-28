@@ -71,7 +71,13 @@ function YesForm() {
             <div className="mt-2 max-w-xl text-sm text-gray-500">
                 <p>{"I just need some info and then you'll be confirmed!"}</p>
             </div>
-            <Form action="?/yes" className="mt-5 w-full sm:flex sm:items-center" method="post">
+            <Form
+                action={`/${user?.shortCode}`}
+                className="mt-5 w-full sm:flex sm:items-center"
+                method="post"
+            >
+                <input id="response" name="response" type="hidden" value="YES" />
+
                 <div className="flex w-full flex-col divide-y divide-black/10">
                     <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
                         <label
@@ -211,7 +217,13 @@ function NoForm() {
             <div className="mt-2 max-w-xl text-sm text-gray-500">
                 <p>{"Maybe we'll see you next time."}</p>
             </div>
-            <Form action="?/no" className="mt-5 w-full sm:flex sm:items-center" method="post">
+            <Form
+                action={`/${user?.shortCode}`}
+                className="mt-5 w-full sm:flex sm:items-center"
+                method="post"
+            >
+                <input id="response" name="response" type="hidden" value="NO" />
+
                 <div className="flex w-full flex-col divide-y divide-black/10">
                     <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
                         <label
@@ -252,7 +264,13 @@ function MaybeForm() {
             <div className="mt-2 max-w-xl text-sm text-gray-500">
                 <p>When you know for sure, you can come back and update your response.</p>
             </div>
-            <Form action="?/maybe" className="mt-5 w-full sm:flex sm:items-center" method="post">
+            <Form
+                action={`/${user?.shortCode}`}
+                className="mt-5 w-full sm:flex sm:items-center"
+                method="post"
+            >
+                <input id="response" name="response" type="hidden" value="MAYBE" />
+
                 <div className="flex w-full flex-col divide-y divide-black/10">
                     <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
                         <label
