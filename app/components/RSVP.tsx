@@ -2,8 +2,8 @@ import { RadioGroup } from "@headlessui/react"
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { CheckCircleIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/solid"
 import { Form } from "@remix-run/react"
-import type { ForwardRefExoticComponent, SVGProps } from "react"
-import { Fragment, useState } from "react"
+import type { ForwardRefExoticComponent, ReactNode, SVGProps } from "react"
+import { useState } from "react"
 import { classNames } from "~/utilities/classNames"
 import { Card } from "./Card"
 
@@ -41,8 +41,8 @@ export function RSVP() {
     const [selectedResponse, setSelectedResponse] = useState<string | undefined>(undefined)
 
     return (
-        <Fragment>
-            <RSVPBar onChange={setSelectedResponse} value={selectedResponse} />
+        <RSVPBar onChange={setSelectedResponse} value={selectedResponse}>
+            {!!selectedResponse && <hr className="border-t border-black/10" />}
             {isYes(selectedResponse) ? (
                 <YesForm />
             ) : isNo(selectedResponse) ? (
@@ -50,7 +50,7 @@ export function RSVP() {
             ) : isMaybe(selectedResponse) ? (
                 <MaybeForm />
             ) : null}
-        </Fragment>
+        </RSVPBar>
     )
 }
 
@@ -58,14 +58,14 @@ function YesForm() {
     const [selectedPlusOne, setSelectedPlusOne] = useState<boolean | undefined>(undefined)
 
     return (
-        <Card className="p-6">
+        <div className="py-6 px-4 sm:px-6">
             <h3 className="text-base font-semibold leading-6 text-gray-900">Hooray! 🎉</h3>
             <div className="mt-2 max-w-xl text-sm text-gray-500">
                 <p>{"I just need some info and then you'll be confirmed!"}</p>
             </div>
             <Form className="mt-5 w-full sm:flex sm:items-center">
-                <div className="flex w-full flex-col divide-y divide-black/20">
-                    <div className="grid grid-rows-2 items-center pb-6 sm:grid-cols-2 sm:grid-rows-none">
+                <div className="flex w-full flex-col divide-y divide-black/10">
+                    <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
                         <label
                             className="block text-sm font-medium leading-6 text-gray-900"
                             htmlFor="name"
@@ -177,7 +177,7 @@ function YesForm() {
 
                     <div className="flex items-center justify-end gap-x-6 pt-6 pb-2">
                         <button
-                            className="rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                            className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             type="submit"
                         >
                             Submit Response
@@ -185,21 +185,102 @@ function YesForm() {
                     </div>
                 </div>
             </Form>
-        </Card>
+        </div>
     )
 }
+
 function NoForm() {
-    return <div>No Form</div>
+    return (
+        <div className="py-6 px-4 sm:px-6">
+            <h3 className="text-base font-semibold leading-6 text-gray-900">
+                {"We'll miss you! 🙁"}
+            </h3>
+            <div className="mt-2 max-w-xl text-sm text-gray-500">
+                <p>{"Maybe we'll see you next time."}</p>
+            </div>
+            <Form className="mt-5 w-full sm:flex sm:items-center">
+                <div className="flex w-full flex-col divide-y divide-black/10">
+                    <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
+                        <label
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                            htmlFor="name"
+                        >
+                            Name
+                        </label>
+                        <input
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                            id="name"
+                            name="name"
+                            placeholder="Jane Doe"
+                            type="text"
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-end gap-x-6 pt-6 pb-2">
+                        <button
+                            className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            type="submit"
+                        >
+                            Submit Response
+                        </button>
+                    </div>
+                </div>
+            </Form>
+        </div>
+    )
 }
 function MaybeForm() {
-    return <div>Maybe Form</div>
+    return (
+        <div className="py-6 px-4 sm:px-6">
+            <h3 className="text-base font-semibold leading-6 text-gray-900">No worries 😃</h3>
+            <div className="mt-2 max-w-xl text-sm text-gray-500">
+                <p>When you know for sure, you can come back and update your response.</p>
+            </div>
+            <Form className="mt-5 w-full sm:flex sm:items-center">
+                <div className="flex w-full flex-col divide-y divide-black/10">
+                    <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
+                        <label
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                            htmlFor="name"
+                        >
+                            Name
+                        </label>
+                        <input
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                            id="name"
+                            name="name"
+                            placeholder="Jane Doe"
+                            type="text"
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-end gap-x-6 pt-6 pb-2">
+                        <button
+                            className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            type="submit"
+                        >
+                            Submit Response
+                        </button>
+                    </div>
+                </div>
+            </Form>
+        </div>
+    )
 }
 
-export function RSVPBar({ value, onChange }: { value: any; onChange: (value: any) => void }) {
+export function RSVPBar({
+    value,
+    onChange,
+    children,
+}: {
+    value: any
+    onChange: (value: any) => void
+    children: ReactNode
+}) {
     return (
-        <Card>
+        <Card className="p-0">
             <RadioGroup
-                className="flex w-full flex-col items-center justify-center sm:flex-row sm:justify-between"
+                className="flex w-full flex-col items-center justify-center px-4 py-5 sm:flex-row sm:justify-between sm:px-6"
                 onChange={onChange}
                 value={value}
             >
@@ -211,7 +292,8 @@ export function RSVPBar({ value, onChange }: { value: any; onChange: (value: any
                         <RSVPButton key={option.response} option={option} />
                     ))}
                 </div>
-            </RadioGroup>{" "}
+            </RadioGroup>
+            {children}
         </Card>
     )
 }
