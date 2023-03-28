@@ -10,13 +10,15 @@
     "dependencies": {
         "@headlessui/react": "^1.7.13",
         "@heroicons/react": "^2.0.16",
+        "@prisma/client": "^4.11.0",
         "@remix-run/node": "^1.14.3",
         "@remix-run/react": "^1.14.3",
         "@vercel/remix": "^1.14.3-patch.1",
         "isbot": "latest",
         "mapbox-gl": "^2.13.0",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "remix-utils": "^6.0.0"
     },
     "devDependencies": {
         "@remix-run/dev": "^1.14.3",

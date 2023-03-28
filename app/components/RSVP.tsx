@@ -1,10 +1,11 @@
 import { RadioGroup } from "@headlessui/react"
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
 import { CheckCircleIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/solid"
+import type { User } from "@prisma/client/edge"
 import { Form } from "@remix-run/react"
 import type { ForwardRefExoticComponent, ReactNode, SVGProps } from "react"
-import { useState } from "react"
-import { classNames } from "~/utilities/classNames"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
+import { classNames } from "~/utilities/class-names"
 import { Card } from "./Card"
 
 export interface RSVPOption {
@@ -35,9 +36,11 @@ function isMaybe(response?: string): boolean {
     return response === "Maybe"
 }
 
+export const UserContext = createContext<User | undefined>(undefined)
+export const ActionDataContext = createContext<any>(undefined)
+
 export function RSVP() {
     // TODO: Save responses in MongoDB
-
     const [selectedResponse, setSelectedResponse] = useState<string | undefined>(undefined)
 
     return (
@@ -55,7 +58,13 @@ export function RSVP() {
 }
 
 function YesForm() {
-    const [selectedPlusOne, setSelectedPlusOne] = useState<boolean | undefined>(undefined)
+    const user = useContext(UserContext)
+    const actionData = useContext(ActionDataContext)
+    const [selectedPlusOne, setSelectedPlusOne] = useState<boolean>(user?.plusOne ?? false)
+
+    const form = useRef<HTMLFormElement>()
+
+    useEffect(() => console.log(Object.fromEntries(new FormData(form.current))), [form])
 
     return (
         <div className="py-6 px-4 sm:px-6">
@@ -63,7 +72,7 @@ function YesForm() {
             <div className="mt-2 max-w-xl text-sm text-gray-500">
                 <p>{"I just need some info and then you'll be confirmed!"}</p>
             </div>
-            <Form className="mt-5 w-full sm:flex sm:items-center">
+            <Form action="?/yes" className="mt-5 w-full sm:flex sm:items-center" method="post">
                 <div className="flex w-full flex-col divide-y divide-black/10">
                     <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 sm:grid-cols-2 sm:grid-rows-none">
                         <label
@@ -73,16 +82,18 @@ function YesForm() {
                             Name
                         </label>
                         <input
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             id="name"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
+                            value={user?.name}
                         />
                     </div>
 
                     <RadioGroup
                         className="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
+                        name="plus_one"
                         onChange={setSelectedPlusOne}
                         value={selectedPlusOne}
                     >
@@ -94,7 +105,7 @@ function YesForm() {
                             <RadioGroup.Label
                                 as="p"
                                 className="text-sm text-gray-500"
-                                id="plus-one-description"
+                                id="plus_one_description"
                             >
                                 A guest who will not be responding seprately
                             </RadioGroup.Label>
@@ -128,14 +139,14 @@ function YesForm() {
                                                 aria-hidden="true"
                                                 className={classNames(
                                                     !checked ? "invisible" : "",
-                                                    "h-5 w-5 text-green-600"
+                                                    "h-5 w-5 text-indigo-600"
                                                 )}
                                             />
                                             <span
                                                 aria-hidden="true"
                                                 className={classNames(
                                                     checked
-                                                        ? "border-green-600"
+                                                        ? "border-indigo-600"
                                                         : "border-transparent",
                                                     "pointer-events-none absolute -inset-px rounded-lg border-2"
                                                 )}
@@ -151,7 +162,7 @@ function YesForm() {
                         <div className="flex flex-col justify-center gap-2 sm:gap-0">
                             <label
                                 className="block text-sm font-medium leading-6 text-gray-900"
-                                htmlFor="dietary-restrictions"
+                                htmlFor="dietary_restrictions"
                             >
                                 Do you {selectedPlusOne && "or your plus-one "}have any dietary
                                 restrictions?
@@ -159,17 +170,17 @@ function YesForm() {
 
                             <p
                                 className="text-sm text-gray-500"
-                                id="emdietary-restrictionsail-description"
+                                id="dietary_restrictions_description"
                             >
                                 Leave blank if not applicable
                             </p>
                         </div>
 
                         <textarea
-                            className="block w-full max-w-2xl rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                            className="block w-full max-w-2xl rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                             defaultValue={""}
-                            id="dietary-restrictions"
-                            name="dietary-restrictions"
+                            id="dietary_restrictions"
+                            name="dietary_restrictions"
                             placeholder="e.g. wheat, peanuts, dairy, shrimp, soy, etc."
                             rows={2}
                         />
@@ -177,10 +188,11 @@ function YesForm() {
 
                     <div className="flex items-center justify-end gap-x-6 pt-6 pb-2">
                         <button
-                            className="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="rounded-md py-2 px-3 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 enabled:bg-indigo-600 enabled:text-white enabled:shadow-sm enabled:hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
+                            disabled={!!actionData?.ok}
                             type="submit"
                         >
-                            Submit Response
+                            {actionData?.ok ? "Update Response" : "Submit Response"}
                         </button>
                     </div>
                 </div>
@@ -190,6 +202,8 @@ function YesForm() {
 }
 
 function NoForm() {
+    const user = useContext(UserContext)
+
     return (
         <div className="py-6 px-4 sm:px-6">
             <h3 className="text-base font-semibold leading-6 text-gray-900">
@@ -208,11 +222,12 @@ function NoForm() {
                             Name
                         </label>
                         <input
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             id="name"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
+                            value={user?.name}
                         />
                     </div>
 
@@ -230,6 +245,8 @@ function NoForm() {
     )
 }
 function MaybeForm() {
+    const user = useContext(UserContext)
+
     return (
         <div className="py-6 px-4 sm:px-6">
             <h3 className="text-base font-semibold leading-6 text-gray-900">No worries 😃</h3>
@@ -246,11 +263,12 @@ function MaybeForm() {
                             Name
                         </label>
                         <input
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             id="name"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
+                            value={user?.name}
                         />
                     </div>
 

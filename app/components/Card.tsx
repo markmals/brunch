@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { classNames } from "~/utilities/classNames"
+import { classNames } from "~/utilities/class-names"
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
     return (
