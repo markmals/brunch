@@ -5,12 +5,20 @@ import appStyles from "./styles/app.css"
 
 export const config = { runtime: "edge" }
 
+const title = "Brunch • 4/16"
+const description = "You are invited to brunch at Mark's house!"
+
 export const meta: V2_MetaFunction = () => [
     { charSet: "utf-8" },
-    { title: "Brunch • 4/16" },
+    { title },
+    { name: "description", content: description },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
-    // TODO: Add OpenGraph meta tags
-    // { name: "description", content: "HTML, dynamically rendered in a city near you" },
+    { property: "og:title", content: title },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: "mimosas.jpg" },
+    // FIXME: How do I generate this?
+    // { property: "og:url", content: "" },
+    { property: "og:description", content: description },
 ]
 
 export const links: LinksFunction = () => [
