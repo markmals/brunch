@@ -1,8 +1,7 @@
 import { RadioGroup } from "@headlessui/react"
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { CheckCircleIcon } from "@heroicons/react/24/solid"
-import type { User } from "@prisma/client/edge"
-import { Response } from "@prisma/client/edge"
+import type { Response, User } from "@prisma/client/edge"
 import { Form, useNavigation } from "@remix-run/react"
 import type { ForwardRefExoticComponent, SVGProps } from "react"
 import { useEffect, useMemo, useState } from "react"
@@ -277,9 +276,9 @@ export namespace RsvpCard {
     }
 
     export const OPTIONS: RsvpCard.Option[] = [
-        { response: Response.YES, icon: CheckIcon },
-        { response: Response.MAYBE, icon: QuestionMarkCircleIcon },
-        { response: Response.NO, icon: XMarkIcon },
+        { response: "YES", icon: CheckIcon },
+        { response: "MAYBE", icon: QuestionMarkCircleIcon },
+        { response: "NO", icon: XMarkIcon },
     ]
 
     export interface Props {
