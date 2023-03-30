@@ -10,7 +10,7 @@ import { capitalize } from "~/utilities/capitalize"
 import { classNames } from "~/utilities/class-names"
 import { Card } from "./Card"
 
-export function Rsvp({ user }: Rsvp.Props) {
+export function RsvpCard({ user }: RsvpCard.Props) {
     let navigation = useNavigation()
 
     let [selectedResponse, setSelectedResponse] = useState<Response | null>(user.response)
@@ -67,8 +67,8 @@ export function Rsvp({ user }: Rsvp.Props) {
                     Can you make it?
                 </RadioGroup.Label>
                 <div className="grid w-full grid-cols-1 items-center gap-y-6 sm:w-auto sm:grid-cols-3 sm:gap-x-4">
-                    {Rsvp.OPTIONS.map(option => (
-                        <Rsvp.Button key={option.response} option={option} />
+                    {RsvpCard.OPTIONS.map(option => (
+                        <RsvpCard.Button key={option.response} option={option} />
                     ))}
                 </div>
             </RadioGroup>
@@ -268,7 +268,7 @@ export function Rsvp({ user }: Rsvp.Props) {
     )
 }
 
-export namespace Rsvp {
+export namespace RsvpCard {
     export interface Option {
         response: Response
         icon: ForwardRefExoticComponent<
@@ -276,7 +276,7 @@ export namespace Rsvp {
         >
     }
 
-    export const OPTIONS: Rsvp.Option[] = [
+    export const OPTIONS: RsvpCard.Option[] = [
         { response: Response.YES, icon: CheckIcon },
         { response: Response.MAYBE, icon: QuestionMarkCircleIcon },
         { response: Response.NO, icon: XMarkIcon },
@@ -289,7 +289,7 @@ export namespace Rsvp {
 
     export namespace Button {
         export interface Props {
-            option: Rsvp.Option
+            option: RsvpCard.Option
         }
     }
 
