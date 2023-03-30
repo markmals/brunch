@@ -1,0 +1,25 @@
+---
+export interface Props {
+    class?: string
+}
+
+let { class: cls } = Astro.props
+---
+
+<div
+    class:list={[
+        cls,
+        /p-/.test(cls ?? "") ||
+        /px-/.test(cls ?? "") ||
+        /py-/.test(cls ?? "") ||
+        /pl-/.test(cls ?? "") ||
+        /pr-/.test(cls ?? "") ||
+        /pt-/.test(cls ?? "") ||
+        /pb-/.test(cls ?? "")
+            ? null
+            : "px-4 py-5 sm:px-6",
+        "border border-gray-200 bg-white shadow-sm sm:rounded-lg",
+    ]}
+>
+    <slot />
+</div>

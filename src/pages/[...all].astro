@@ -1,0 +1,64 @@
+---
+import Card from "../components/Card.astro"
+import Header from "../components/Header.astro"
+import InfoCard from "../components/InfoCard.astro"
+import Menu from "../components/Menu.astro"
+import { Rsvp } from "../components/Rsvp"
+import { eggsBenidictMenu } from "../data/menu"
+import { db } from "../lib/db.server"
+
+let mapboxToken = import.meta.env.MAPBOX_TOKEN!
+
+// TODO: Change map link based on user agent
+let mapLink = "https://maps.apple.com/?daddr=1416+Berene+Ave"
+
+let shortCode = Astro.url.pathname.replace("/", "")
+let user = await db.user.findFirst({ where: { shortCode } })
+
+if (!user) {
+    Astro.redirect(import.meta.env.GATE_URL!)
+}
+---
+
+<html class="h-full bg-slate-50" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Brunch • 4/16</title>
+        <style is:global>
+            @import "mapbox-gl/dist/mapbox-gl.css";
+
+            @tailwind base;
+            @tailwind components;
+            @tailwind utilities;
+
+            .hero {
+                background-image: var(--hero-image);
+            }
+
+            .inner-border {
+                outline: 1px solid rgba(0, 0, 0, 0.2);
+                outline-offset: -1px;
+            }
+        </style>
+    </head>
+    <body class="h-full">
+        <main class="mx-auto flex max-w-7xl flex-col gap-6 pb-10 sm:py-10 sm:px-8 lg:px-28">
+            <Header image="mimosas.jpg" title="Brunch" />
+            <Card class="p-0">
+                <!-- FIXME: Only works with `client:only` -->
+                <!-- Otherwise I get the error: -->
+                <!-- createUniqueId cannot be used under non-hydrating context -->
+                <Rsvp user={user} client:only />
+            </Card>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <Menu menu={eggsBenidictMenu} />
+                <InfoCard mapLink={mapLink} mapboxToken={mapboxToken} />
+                <!-- TODO: Display a list of respondants and how they responded? -->
+            </div>
+        </main>
+    </body>
+</html>
