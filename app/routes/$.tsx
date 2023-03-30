@@ -1,4 +1,4 @@
-import type { Response as UserResponse } from "@prisma/client"
+import type { Response as UserResponse } from "@prisma/client/edge"
 import { useLoaderData } from "@remix-run/react"
 import type { ActionArgs, LoaderArgs } from "@vercel/remix"
 import { json, redirect } from "@vercel/remix"
