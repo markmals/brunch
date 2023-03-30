@@ -20,13 +20,13 @@ export namespace Menu {
 export const eggsBenidictMenu: Menu.Model = {
     items: [
         {
-            imageUrl: "nectarine-toast.jpg",
+            imageUrl: "nectarine-toast.webp",
             course: "Hors d'oeuvre",
             dish: "Nectarine Bruschetta",
             description: "Honey, ricotta, and sliced nectarines on thick sliced country bread.",
         },
         {
-            imageUrl: "eggs-benny.jpg",
+            imageUrl: "eggs-benny.webp",
             course: "Entrée",
             dish: "Eggs Benny",
             description: `Classic eggs Benedict with Hollandaise, ham, and poached eggs on fresh 

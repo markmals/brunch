@@ -59,7 +59,7 @@ export default function Invite() {
 
     return (
         <main className="mx-auto flex max-w-7xl flex-col gap-6 pb-10 sm:px-8 sm:py-10 lg:px-28">
-            <Header image="mimosas.jpg" title="Brunch" />
+            <Header image="mimosas.webp" title="Brunch" />
             <RsvpCard user={user} />
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

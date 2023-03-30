@@ -15,7 +15,7 @@ export const meta: V2_MetaFunction = () => [
     { name: "viewport", content: "width=device-width, initial-scale=1" },
     { property: "og:title", content: title },
     { property: "og:type", content: "website" },
-    { property: "og:image", content: "mimosas.jpg" },
+    { property: "og:image", content: "mimosas.webp" },
     // FIXME: How do I generate this?
     // { property: "og:url", content: "" },
     { property: "og:description", content: description },
