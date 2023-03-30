@@ -6,7 +6,8 @@
         "format": "prettier -w .",
         "generate": "prisma generate --data-proxy",
         "build": "remix build",
-        "typecheck": "tsc"
+        "typecheck": "tsc",
+        "postinstall": "npm run generate"
     },
     "dependencies": {
         "@headlessui/react": "^1.7.13",
