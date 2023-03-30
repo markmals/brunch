@@ -11,3 +11,5 @@ export function loader() {
 //    - Add name
 //    - Get link to send
 // - See current users responses without going to the db
+// - Build/update menus
+// - Create new events/manage existing events
