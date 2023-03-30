@@ -1,10 +1,17 @@
 import mapboxgl from "mapbox-gl"
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 
 export function Map({ token }: { token: string }) {
     const mapContainer = useRef<HTMLDivElement | null>(null)
     const map = useRef<mapboxgl.Map | null>(null)
     const marker = useRef<mapboxgl.Marker | null>(null)
+    const mediaList = useRef<MediaQueryList | null>(null)
+
+    const onChange = useCallback((event: MediaQueryListEvent) => {
+        map.current?.setStyle(
+            event.matches ? "mapbox://styles/mapbox/dark-v11" : "mapbox://styles/mapbox/streets-v12"
+        )
+    }, [])
 
     useEffect(() => {
         if (map.current) {
@@ -16,13 +23,25 @@ export function Map({ token }: { token: string }) {
             map.current = new mapboxgl.Map({
                 accessToken: token,
                 container: mapContainer.current!,
-                style: "mapbox://styles/mapbox/streets-v12",
                 center: [-97.68353394771864, 30.28148032602474],
                 zoom: 14,
                 dragPan: false,
                 scrollZoom: false,
                 attributionControl: false,
             })
+
+            mediaList.current = window.matchMedia("(prefers-color-scheme: dark)")
+
+            map.current?.setStyle(
+                mediaList.current.matches
+                    ? "mapbox://styles/mapbox/dark-v11"
+                    : "mapbox://styles/mapbox/streets-v12"
+            )
+
+            mediaList.current?.addEventListener("change", onChange)
+
+            // FIXME: This is being run immediately instead of on destroy of this cmp for some reason
+            // return () => mediaList.current?.removeEventListener("change", onChange)
         }
     })
 

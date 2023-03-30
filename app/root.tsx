@@ -9,6 +9,7 @@ export const meta: V2_MetaFunction = () => [
     { charSet: "utf-8" },
     { title: "Brunch • 4/16" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
+    // TODO: Add OpenGraph meta tags
     // { name: "description", content: "HTML, dynamically rendered in a city near you" },
 ]
 
@@ -20,7 +21,7 @@ export const links: LinksFunction = () => [
 
 export default function App() {
     return (
-        <html className="h-full bg-slate-50" lang="en">
+        <html className="h-full bg-slate-50 dark:bg-black" lang="en">
             <head>
                 <Meta />
                 <Links />

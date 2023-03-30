@@ -54,8 +54,6 @@ export async function action({ request }: ActionArgs) {
     return null
 }
 
-// TODO: Add dark mode
-
 export default function Invite() {
     const { mapboxToken, mapLink, user } = useLoaderData<typeof loader>()
 

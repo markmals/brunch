@@ -1,4 +1,4 @@
-import { Card, VStack } from "./Card"
+import { Card } from "./Card"
 
 export namespace Menu {
     export interface Model {
@@ -38,8 +38,8 @@ export const eggsBenidictMenu: Menu.Model = {
 export function Menu({ menu }: { menu: Menu.Model }) {
     return (
         <Card>
-            <VStack className="gap-6 py-2">
-                <h2 className="font-serif text-4xl font-extrabold capitalize text-gray-800">
+            <div className="flex flex-col items-center justify-center gap-6 py-2">
+                <h2 className="font-serif text-4xl font-extrabold capitalize text-gray-800 dark:text-gray-200">
                     {menu.title ?? "Menu"}
                 </h2>
                 <div className="flex flex-col gap-12">
@@ -50,21 +50,21 @@ export function Menu({ menu }: { menu: Menu.Model }) {
                                 className="inner-border h-64 w-full rounded object-cover"
                                 src={item.imageUrl}
                             />
-                            <div className="flex flex-col items-center gap-2 divide-y divide-gray-900/10 text-center">
+                            <div className="flex flex-col items-center gap-2 divide-y divide-gray-900/10 text-center dark:divide-gray-100/5">
                                 <h3 className="w-full pt-2 font-serif text-3xl text-orange-700">
                                     {item.course}
                                 </h3>
-                                <span className="w-full pt-2 text-lg font-light uppercase text-gray-500">
+                                <span className="w-full pt-2 text-lg font-light uppercase text-gray-500 dark:text-gray-400">
                                     {item.dish}
                                 </span>
-                                <span className="w-full pt-2 text-sm text-gray-800">
+                                <span className="w-full pt-2 text-sm text-gray-800 dark:text-gray-500">
                                     {item.description}
                                 </span>
                             </div>
                         </div>
                     ))}
                 </div>
-            </VStack>
+            </div>
         </Card>
     )
 }
