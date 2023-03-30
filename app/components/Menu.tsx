@@ -15,6 +15,8 @@ export namespace Menu {
     }
 }
 
+// TODO: Add actual brunch menu
+
 export const eggsBenidictMenu: Menu.Model = {
     items: [
         {
