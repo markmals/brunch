@@ -1,5 +1,7 @@
+import forms from "@tailwindcss/forms"
+
 /** @type {import("tailwindcss").Config} */
-module.exports = {
+export default {
     content: ["./app/**/*.tsx"],
     theme: {
         fontFamily: {
@@ -48,6 +50,6 @@ module.exports = {
             ],
         },
     },
-    plugins: [require("@tailwindcss/forms")],
+    plugins: [forms()],
     darkMode: "media",
 }
