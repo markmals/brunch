@@ -3,8 +3,10 @@ export default {
     ignoredRouteFiles: ["**/.*"],
     serverDependenciesToBundle: ["mapbox-gl"],
     future: {
-        v2_routeConvention: true,
         v2_meta: true,
+        v2_routeConvention: true,
+        v2_normalizeFormMethod: true,
+        v2_errorBoundary: true,
         unstable_tailwind: true,
     },
 }

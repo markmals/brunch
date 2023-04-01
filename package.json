@@ -25,7 +25,7 @@
     },
     "devDependencies": {
         "@remix-run/dev": "^1.15.0-pre.3",
-        "@remix-run/eslint-config": "^1.14.3",
+        "@remix-run/eslint-config": "^1.15.0-pre.3",
         "@remix-run/serve": "^1.15.0-pre.3",
         "@tailwindcss/forms": "^0.5.3",
         "@types/mapbox-gl": "^2.7.10",
