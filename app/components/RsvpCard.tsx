@@ -37,7 +37,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
     let title = useMemo(() => {
         switch (selectedResponse) {
             case "YES":
-                return "Hooray! 🎉"
+                return "Hooray! 🥳"
             case "MAYBE":
                 return "No worries 🤠"
             case "NO":
@@ -221,7 +221,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                 )}
                             </div>
 
-                            <hr className="w-full border-t border-white/5" />
+                            <hr className="w-full border-t border-black/10 dark:border-white/5" />
 
                             <div className="flex items-center justify-end gap-x-6 px-6 pb-2 pt-6">
                                 <button
@@ -301,7 +301,7 @@ export namespace RsvpCard {
             <RadioGroup.Option
                 className={({ checked }) =>
                     classNames(
-                        "cursor-pointer rounded-md px-3 py-2 text-sm font-semibold shadow-sm",
+                        "cursor-pointer rounded-md px-3 py-3 text-sm font-semibold shadow-sm sm:py-2",
                         checked
                             ? isYes
                                 ? "bg-green-600 text-white"
