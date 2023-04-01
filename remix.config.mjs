@@ -7,6 +7,7 @@ export default {
         v2_routeConvention: true,
         v2_normalizeFormMethod: true,
         v2_errorBoundary: true,
+        unstable_dev: true,
         unstable_tailwind: true,
     },
 }
