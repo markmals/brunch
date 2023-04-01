@@ -16,6 +16,7 @@
         "@headlessui/react": "^1.7.13",
         "@heroicons/react": "^2.0.16",
         "@mcansh/remix-raw-http": "^0.2.1",
+        "@preact/signals-react": "^1.2.2",
         "@prisma/client": "^4.12.0",
         "@remix-run/node": "^1.15.0",
         "@remix-run/react": "^1.15.0-pre.3",

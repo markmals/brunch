@@ -5,37 +5,37 @@ import type { User } from "@prisma/client/edge"
 import { Response } from "@prisma/client/edge"
 import { Form, useNavigation } from "@remix-run/react"
 import type { ForwardRefExoticComponent, SVGProps } from "react"
-import { useEffect, useMemo, useState } from "react"
 import { capitalize } from "~/utilities/capitalize"
 import { classNames } from "~/utilities/class-names"
 import { Card } from "./Card"
 
+import { useComputed, useSignal } from "@preact/signals-react"
+
 export function RsvpCard({ user }: RsvpCard.Props) {
     let navigation = useNavigation()
 
-    let [selectedResponse, setSelectedResponse] = useState<Response | null>(user.response)
+    let selectedResponse = useSignal(user.response)
 
-    let [name, setName] = useState(user.name)
-    let [plusOne, setPlusOne] = useState(user.plusOne)
-    let [dietaryRestrictions, setDietaryRestrictions] = useState(user.dietaryRestrictions)
+    let name = useSignal(user.name)
+    let plusOne = useSignal(user.plusOne)
+    let dietaryRestrictions = useSignal(user.dietaryRestrictions)
 
-    let isDirty = useMemo(() => {
-        let responseChanged = selectedResponse !== user.response
-        let nameChanged = name !== user.name
-        let plusOneChanged = plusOne !== user.plusOne
+    let isDirty = useComputed(() => {
+        let responseChanged = selectedResponse.value !== user.response
+        let nameChanged = name.value !== user.name
+        let plusOneChanged = plusOne.value !== user.plusOne
         let dietChanged =
-            selectedResponse === "YES" && dietaryRestrictions !== user.dietaryRestrictions
+            selectedResponse.value === "YES" &&
+            dietaryRestrictions.value !== user.dietaryRestrictions
 
         return responseChanged || nameChanged || plusOneChanged || dietChanged
-    }, [dietaryRestrictions, name, plusOne, selectedResponse, user])
+    })
 
-    useEffect(() => setDietaryRestrictions(user.dietaryRestrictions), [user])
+    let isYes = useComputed(() => selectedResponse.value === "YES")
+    let isSelected = useComputed(() => !!selectedResponse.value)
 
-    let isYes = useMemo(() => selectedResponse === "YES", [selectedResponse])
-    let isSelected = useMemo(() => !!selectedResponse, [selectedResponse])
-
-    let title = useMemo(() => {
-        switch (selectedResponse) {
+    let title = useComputed(() => {
+        switch (selectedResponse.value) {
             case "YES":
                 return "Hooray! 🥳"
             case "MAYBE":
@@ -43,10 +43,10 @@ export function RsvpCard({ user }: RsvpCard.Props) {
             case "NO":
                 return "We'll miss you! 🙁"
         }
-    }, [selectedResponse])
+    })
 
-    let description = useMemo(() => {
-        switch (selectedResponse) {
+    let description = useComputed(() => {
+        switch (selectedResponse.value) {
             case "YES":
                 return "I just need some info and then you'll be confirmed!"
             case "MAYBE":
@@ -54,14 +54,14 @@ export function RsvpCard({ user }: RsvpCard.Props) {
             case "NO":
                 return "Maybe we'll see you next time."
         }
-    }, [selectedResponse])
+    })
 
     return (
         <Card className="p-0">
             <RadioGroup
                 className="flex w-full flex-col items-center justify-center px-4 py-5 sm:flex-row sm:justify-between sm:px-6"
-                onChange={setSelectedResponse}
-                value={selectedResponse}
+                onChange={value => (selectedResponse.value = value)}
+                value={selectedResponse.value}
             >
                 <RadioGroup.Label className="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0">
                     Can you make it?
@@ -73,16 +73,16 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                 </div>
             </RadioGroup>
 
-            {isSelected && (
+            {isSelected.value && (
                 <>
                     <hr className="border-t border-black/10 dark:border-white/5" />
 
                     <div className="py-6">
                         <h3 className="px-6 text-base font-semibold leading-6 text-gray-900 dark:text-gray-50">
-                            {title ?? "Unknown"}
+                            {title.value ?? "Unknown"}
                         </h3>
                         <div className="mt-2 max-w-xl px-6 text-sm text-gray-500">
-                            <p>{description ?? "Unknown"}</p>
+                            <p>{description.value ?? "Unknown"}</p>
                         </div>
                         <Form
                             action={`/${user.shortCode}`}
@@ -93,7 +93,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                 id="response"
                                 name="response"
                                 type="hidden"
-                                value={selectedResponse ?? ""}
+                                value={selectedResponse.value ?? ""}
                             />
 
                             <div className="flex w-full flex-col divide-y divide-black/10 px-6 dark:divide-white/5">
@@ -108,20 +108,22 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 sm:text-sm sm:leading-6"
                                         id="name"
                                         name="name"
-                                        onInput={event => setName((event.target as any).value)}
+                                        onInput={event =>
+                                            (name.value = (event.target as HTMLInputElement).value)
+                                        }
                                         placeholder="Jane Doe"
                                         type="text"
-                                        value={name}
+                                        value={name.value}
                                     />
                                 </div>
 
-                                {isYes && (
+                                {isYes.value && (
                                     <>
                                         <RadioGroup
                                             className="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
                                             name="plus-one"
-                                            onChange={setPlusOne}
-                                            value={plusOne}
+                                            onChange={value => (plusOne.value = value)}
+                                            value={plusOne.value}
                                         >
                                             <div className="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
                                                 <RadioGroup.Label className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50">
@@ -208,13 +210,13 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                                 id="dietary-restrictions"
                                                 name="dietary-restrictions"
                                                 onInput={event =>
-                                                    setDietaryRestrictions(
-                                                        (event.target as any).value
-                                                    )
+                                                    (dietaryRestrictions.value = (
+                                                        event.target as HTMLTextAreaElement
+                                                    ).value)
                                                 }
                                                 placeholder="e.g. wheat, peanuts, dairy, shrimp, soy, etc."
                                                 rows={2}
-                                                value={dietaryRestrictions}
+                                                value={dietaryRestrictions.value}
                                             />
                                         </div>
                                     </>
@@ -294,8 +296,8 @@ export namespace RsvpCard {
     }
 
     export function Button({ option }: Button.Props) {
-        let isYes = useMemo(() => option.response === "YES", [option])
-        let isNo = useMemo(() => option.response === "NO", [option])
+        let isYes = option.response === "YES"
+        let isNo = option.response === "NO"
 
         return (
             <RadioGroup.Option
