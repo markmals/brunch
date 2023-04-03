@@ -227,7 +227,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                             <div className="flex items-center justify-end gap-x-6 px-6 pb-2 pt-6">
                                 <button
                                     className="flex flex-row items-center justify-center rounded-md px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 enabled:bg-indigo-600 enabled:text-white enabled:shadow-sm enabled:hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 dark:enabled:bg-indigo-700 dark:enabled:hover:bg-indigo-600 dark:disabled:bg-gray-800 dark:disabled:text-slate-500"
-                                    disabled={!isDirty || navigation.state !== "idle"}
+                                    disabled={!isDirty.value || navigation.state !== "idle"}
                                     type="submit"
                                 >
                                     {navigation.state !== "idle" && (
