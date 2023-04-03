@@ -1,6 +1,7 @@
 {
     "private": true,
     "sideEffects": false,
+    "type": "module",
     "scripts": {
         "dev": "npm-run-all build --parallel \"dev:*\"",
         "format": "prettier -w .",
@@ -9,7 +10,7 @@
         "typecheck": "tsc",
         "postinstall": "npm run generate",
         "dev:remix": "remix dev",
-        "dev:node": "cross-env NODE_ENV=development node --watch --require dotenv/config ./dev-server.cjs"
+        "dev:node": "cross-env NODE_ENV=development node --watch --require dotenv/config ./dev-server.js"
     },
     "dependencies": {
         "@fastify/send": "^2.0.1",
