@@ -1,10 +1,10 @@
-import mapboxgl from "mapbox-gl"
+import { Map as Mapbox, Marker } from "mapbox-gl"
 import { useCallback, useEffect, useRef } from "react"
 
 export function Map({ token }: { token: string }) {
     const mapContainer = useRef<HTMLDivElement | null>(null)
-    const map = useRef<mapboxgl.Map | null>(null)
-    const marker = useRef<mapboxgl.Marker | null>(null)
+    const map = useRef<Mapbox | null>(null)
+    const marker = useRef<Marker | null>(null)
     const mediaList = useRef<MediaQueryList | null>(null)
 
     const onChange = useCallback((event: MediaQueryListEvent) => {
@@ -16,11 +16,11 @@ export function Map({ token }: { token: string }) {
     useEffect(() => {
         if (map.current) {
             if (marker.current) return
-            marker.current = new mapboxgl.Marker({ color: "#4f46e5" })
+            marker.current = new Marker({ color: "#4f46e5" })
             marker.current.setLngLat([-97.68353394771864, 30.28148032602474])
             marker.current.addTo(map.current)
         } else {
-            map.current = new mapboxgl.Map({
+            map.current = new Mapbox({
                 accessToken: token,
                 container: mapContainer.current!,
                 center: [-97.68353394771864, 30.28148032602474],

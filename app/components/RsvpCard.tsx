@@ -1,6 +1,7 @@
 import { RadioGroup } from "@headlessui/react"
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { CheckCircleIcon } from "@heroicons/react/24/solid"
+import { useComputed, useSignal } from "@preact/signals-react"
 import type { User } from "@prisma/client/edge"
 import { Response } from "@prisma/client/edge"
 import { Form, useNavigation } from "@remix-run/react"
@@ -8,8 +9,6 @@ import type { ForwardRefExoticComponent, SVGProps } from "react"
 import { capitalize } from "~/utilities/capitalize"
 import { classNames } from "~/utilities/class-names"
 import { Card } from "./Card"
-
-import { useComputed, useSignal } from "@preact/signals-react"
 
 export function RsvpCard({ user }: RsvpCard.Props) {
     let navigation = useNavigation()
