@@ -5,7 +5,7 @@ import { json, redirect } from "@vercel/remix"
 import invariant from "tiny-invariant"
 import { Header } from "~/components/Header"
 import { InfoCard } from "~/components/InfoCard"
-import { eggsBenidictMenu, Menu } from "~/components/Menu"
+import { aprilBrunchMenu, Menu } from "~/components/Menu"
 import { RsvpCard } from "~/components/RsvpCard"
 import { db } from "~/utilities/db.server"
 
@@ -63,7 +63,7 @@ export default function Invite() {
             <RsvpCard user={user} />
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <Menu menu={eggsBenidictMenu} />
+                <Menu menu={aprilBrunchMenu} />
                 <InfoCard mapLink={mapLink} mapboxToken={mapboxToken} />
                 {/* TODO: Display a list of respondants and how they responded? */}
             </div>

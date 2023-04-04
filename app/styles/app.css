@@ -10,3 +10,9 @@
     outline: 1px solid rgba(0, 0, 0, 0.2);
     outline-offset: -1px;
 }
+
+@media (prefers-color-scheme: dark) {
+    .inner-border {
+        outline: none;
+    }
+}

@@ -8,6 +8,9 @@ import {
 import { Card } from "./Card"
 import { Map } from "./Mapbox"
 
+const googleCalendarDownloadLink = `https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=Nm00OHVmNXY1OHUyMXUxYjhxZGlwaHVyMHUgbWFsc3Ryb21tYXJrQG0&tmsrc=malstrommark%40gmail.com`
+const iCalDownloadLink = ``
+
 export function InfoCard({ mapboxToken, mapLink }: { mapboxToken: string; mapLink: string }) {
     return (
         <div className="flex flex-col gap-6">
@@ -24,7 +27,7 @@ export function InfoCard({ mapboxToken, mapLink }: { mapboxToken: string; mapLin
                         <CalendarDaysIcon className="h-5 w-5 text-gray-500" />
                         <span>
                             <strong className="text-black dark:text-gray-100">
-                                Sunday, April 16<sup>th</sup>, 2023
+                                Saturday, April 22<sup>nd</sup>, 2023
                             </strong>
                             <span className="flex flex-row items-center gap-2">
                                 <span className="flex flex-row items-center gap-1 text-black dark:text-gray-100">

@@ -5,7 +5,7 @@ import appStyles from "./styles/app.css"
 
 export const config = { runtime: "edge" }
 
-const title = "Brunch • 4/16"
+const title = "Brunch Invite • 4/22"
 const description = "You are invited to brunch at Mark's house!"
 
 export const meta: V2_MetaFunction = () => [
@@ -13,7 +13,7 @@ export const meta: V2_MetaFunction = () => [
     { title },
     { name: "description", content: description },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
-    { property: "og:title", content: title },
+    { property: "og:title", content: "You're invited to brunch!" },
     { property: "og:type", content: "website" },
     { property: "og:image", content: "mimosas.webp" },
     // FIXME: How do I generate this?

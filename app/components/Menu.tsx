@@ -15,8 +15,6 @@ export namespace Menu {
     }
 }
 
-// TODO: Add actual brunch menu
-
 export const eggsBenidictMenu: Menu.Model = {
     items: [
         {
@@ -31,6 +29,24 @@ export const eggsBenidictMenu: Menu.Model = {
             dish: "Eggs Benny",
             description: `Classic eggs Benedict with Hollandaise, ham, and poached eggs on fresh 
             English muffins. Served with homefries and an arugula lemon salad.`,
+        },
+    ],
+}
+
+export const aprilBrunchMenu: Menu.Model = {
+    items: [
+        {
+            imageUrl: "pan-dulce.webp",
+            course: "Pan Dulce",
+            dish: "Pastelitos Variadas",
+            description: `An assortment of pastries filled with guava, cheese, beef, and more.`,
+        },
+        {
+            imageUrl: "plato-principal.webp",
+            course: "Plato Principal",
+            dish: "Huevos Rancheros a la Cubana",
+            description: `A crisp corn tortilla topped with a fried egg, Cuban-style rice 
+            and beans, salsa morita, and queso cotija.`,
         },
     ],
 }

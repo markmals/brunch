@@ -22,7 +22,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
     let isDirty = useComputed(() => {
         let responseChanged = selectedResponse.value !== user.response
         let nameChanged = name.value !== user.name
-        let plusOneChanged = plusOne.value !== user.plusOne
+        let plusOneChanged = selectedResponse.value === "YES" && plusOne.value !== user.plusOne
         let dietChanged =
             selectedResponse.value === "YES" &&
             dietaryRestrictions.value !== user.dietaryRestrictions
@@ -104,7 +104,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                         Name
                                     </label>
                                     <input
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 sm:text-sm sm:leading-6"
+                                        className="block w-full rounded-md border-0 bg-gray-50 py-1.5 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:focus:bg-black sm:text-sm sm:leading-6"
                                         id="name"
                                         name="name"
                                         onInput={event =>
@@ -146,7 +146,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                                                 checked
                                                                     ? "border-transparent"
                                                                     : "border-gray-300 dark:border-gray-900",
-                                                                "relative flex cursor-pointer rounded-lg border bg-white p-3 shadow-sm focus:outline-none dark:bg-black"
+                                                                "relative flex cursor-pointer rounded-lg border bg-white p-3 shadow-sm focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-900"
                                                             )
                                                         }
                                                         key={plusOne ? 1 : 0}
@@ -192,7 +192,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                                     className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
                                                     htmlFor="dietary-restrictions"
                                                 >
-                                                    Do you {plusOne && "or your plus-one "}
+                                                    Do you {plusOne.value && "or your plus-one "}
                                                     have any dietary restrictions?
                                                 </label>
 
@@ -205,7 +205,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                             </div>
 
                                             <textarea
-                                                className="block w-full max-w-2xl rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:placeholder:text-gray-500 sm:py-1.5 sm:text-sm sm:leading-6"
+                                                className="block w-full max-w-2xl rounded-md border-0 bg-gray-50 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:placeholder:text-gray-500 dark:focus:bg-black sm:py-1.5 sm:text-sm sm:leading-6"
                                                 id="dietary-restrictions"
                                                 name="dietary-restrictions"
                                                 onInput={event =>
@@ -305,11 +305,11 @@ export namespace RsvpCard {
                         "cursor-pointer rounded-md px-3 py-3 text-sm font-semibold shadow-sm sm:py-2",
                         checked
                             ? isYes
-                                ? "bg-green-600 text-white"
+                                ? "bg-green-600 text-white shadow-inner"
                                 : isNo
-                                ? "bg-red-600 text-white"
-                                : "bg-gray-500 text-white"
-                            : "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-black dark:text-gray-100 dark:ring-gray-900 dark:hover:bg-gray-950"
+                                ? "bg-red-600 text-white shadow-inner"
+                                : "bg-gray-500 text-white shadow-inner"
+                            : "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-950 dark:text-gray-100 dark:ring-gray-800 dark:hover:bg-gray-900"
                     )
                 }
                 value={option.response}
