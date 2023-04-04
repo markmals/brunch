@@ -9,3 +9,18 @@ export function generateShortCode(length: number): string {
 
     return str
 }
+
+// for (let name of [
+//     "Melissa Lau",
+//     "Charles Lai",
+//     "Eric Tsang",
+//     "Kara Takasaki",
+//     "Sarah Whatley",
+//     "Morgan Giles",
+//     "Mia Chu",
+//     "Diego De Stefano",
+//     "Thuy Luong",
+//     "Andy Bassari",
+// ]) {
+//     console.log(name, generateShortCode(6))
+// }

@@ -14,12 +14,7 @@ export function Map({ token }: { token: string }) {
     }, [])
 
     useEffect(() => {
-        if (map.current) {
-            if (marker.current) return
-            marker.current = new Marker({ color: "#4f46e5" })
-            marker.current.setLngLat([-97.68353394771864, 30.28148032602474])
-            marker.current.addTo(map.current)
-        } else {
+        if (!map.current) {
             map.current = new Mapbox({
                 accessToken: token,
                 container: mapContainer.current!,
@@ -29,6 +24,12 @@ export function Map({ token }: { token: string }) {
                 scrollZoom: false,
                 attributionControl: false,
             })
+
+            if (!marker.current) {
+                marker.current = new Marker({ color: "#4f46e5" })
+                marker.current.setLngLat([-97.68353394771864, 30.28148032602474])
+                marker.current.addTo(map.current)
+            }
 
             mediaList.current = window.matchMedia("(prefers-color-scheme: dark)")
 
