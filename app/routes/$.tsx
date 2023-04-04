@@ -1,4 +1,4 @@
-import type { Response as UserResponse } from "@prisma/client/edge.js"
+import type { Response as UserResponse } from "@prisma/client/edge"
 import { useLoaderData } from "@remix-run/react"
 import type { ActionArgs, LoaderArgs } from "@vercel/remix"
 import { json, redirect } from "@vercel/remix"
@@ -25,6 +25,7 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
+    console.log(request.url)
     let shortCode = new URL(request.url).pathname.replace("/", "")
 
     let data = await request.formData()
