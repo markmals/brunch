@@ -1,6 +1,7 @@
 import forms from "@tailwindcss/forms"
-import type { Config } from "tailwindcss"
+// import type { Config } from "tailwindcss"
 
+/** @type {import('tailwindcss').Config} */
 export default {
     content: ["./app/**/*.tsx"],
     theme: {
@@ -52,4 +53,4 @@ export default {
     },
     plugins: [forms()],
     darkMode: "media",
-} satisfies Config
+}
