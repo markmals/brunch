@@ -5,7 +5,7 @@ import type { User } from "@prisma/client/edge"
 import { Response } from "@prisma/client/edge"
 import { Form, useNavigation } from "@remix-run/react"
 import type { ForwardRefExoticComponent, SVGProps } from "react"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { capitalize } from "~/utilities/capitalize"
 import { classNames } from "~/utilities/class-names"
 import { Card } from "./Card"
@@ -13,11 +13,11 @@ import { Card } from "./Card"
 export function RsvpCard({ user }: RsvpCard.Props) {
     let navigation = useNavigation()
 
-    let selectedResponse = useMemo(() => user.response, [user])
+    let [selectedResponse, setSelectedResponse] = useState(() => user.response)
 
-    let name = useMemo(() => user.name, [user])
-    let plusOne = useMemo(() => user.plusOne, [user])
-    let dietaryRestrictions = useMemo(() => user.dietaryRestrictions, [user])
+    let [name, setName] = useState(() => user.name)
+    let [plusOne, setPlusOne] = useState(() => user.plusOne)
+    let [dietaryRestrictions, setDietaryRestrictions] = useState(() => user.dietaryRestrictions)
 
     let isDirty = useMemo(() => {
         let responseChanged = selectedResponse !== user.response
@@ -58,7 +58,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
         <Card className="p-0">
             <RadioGroup
                 className="flex w-full flex-col items-center justify-center px-4 py-5 sm:flex-row sm:justify-between sm:px-6"
-                onChange={value => (selectedResponse = value)}
+                onChange={value => setSelectedResponse(value)}
                 value={selectedResponse}
             >
                 <RadioGroup.Label className="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0">
@@ -107,7 +107,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                         id="name"
                                         name="name"
                                         onInput={event =>
-                                            (name = (event.target as HTMLInputElement).value)
+                                            setName((event.target as HTMLInputElement).value)
                                         }
                                         placeholder="Jane Doe"
                                         type="text"
@@ -120,7 +120,7 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                         <RadioGroup
                                             className="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
                                             name="plus-one"
-                                            onChange={value => (plusOne = value)}
+                                            onChange={value => setPlusOne(value)}
                                             value={plusOne}
                                         >
                                             <div className="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
@@ -208,9 +208,9 @@ export function RsvpCard({ user }: RsvpCard.Props) {
                                                 id="dietary-restrictions"
                                                 name="dietary-restrictions"
                                                 onInput={event =>
-                                                    (dietaryRestrictions = (
-                                                        event.target as HTMLTextAreaElement
-                                                    ).value)
+                                                    setDietaryRestrictions(
+                                                        (event.target as HTMLTextAreaElement).value
+                                                    )
                                                 }
                                                 placeholder="e.g. wheat, peanuts, dairy, shrimp, soy, etc."
                                                 rows={2}
