@@ -9,7 +9,6 @@ import { Card } from "./Card"
 import { Map } from "./Mapbox"
 
 const googleCalendarDownloadLink = `https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=Nm00OHVmNXY1OHUyMXUxYjhxZGlwaHVyMHUgbWFsc3Ryb21tYXJrQG0&tmsrc=malstrommark%40gmail.com`
-const iCalDownloadLink = ``
 
 export function InfoCard({ mapboxToken, mapLink }: { mapboxToken: string; mapLink: string }) {
     return (
@@ -57,16 +56,21 @@ export function InfoCard({ mapboxToken, mapLink }: { mapboxToken: string; mapLin
                 </div>
             </Card>
 
-            <div className="flex flex-row gap-6">
-                {/* TODO: Download iCal or Google Cal event */}
+            {/* TODO: Download iCal event */}
+            <a
+                className="flex flex-row gap-6"
+                href={googleCalendarDownloadLink}
+                rel="noreferrer"
+                target="_blank"
+            >
                 <button
                     className="flex w-full flex-row items-center justify-center gap-2 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-950 dark:text-gray-100 dark:ring-transparent dark:hover:bg-gray-950 sm:rounded-md sm:dark:bg-black sm:dark:ring-gray-900"
                     type="button"
                 >
                     <PlusIcon className="h-6 w-6 text-indigo-500" />
-                    Add to Calendar (Not Implemented)
+                    Add to Calendar
                 </button>
-            </div>
+            </a>
         </div>
     )
 }
