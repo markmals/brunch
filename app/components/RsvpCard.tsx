@@ -13,11 +13,11 @@ import { Card } from "./Card"
 export function RsvpCard({ user }: RsvpCard.Props) {
     let navigation = useNavigation()
 
-    let [selectedResponse, setSelectedResponse] = useState(() => user.response)
+    let [selectedResponse, setSelectedResponse] = useState(user.response)
 
-    let [name, setName] = useState(() => user.name)
-    let [plusOne, setPlusOne] = useState(() => user.plusOne)
-    let [dietaryRestrictions, setDietaryRestrictions] = useState(() => user.dietaryRestrictions)
+    let [name, setName] = useState(user.name)
+    let [plusOne, setPlusOne] = useState(user.plusOne)
+    let [dietaryRestrictions, setDietaryRestrictions] = useState(user.dietaryRestrictions)
 
     let isDirty = useMemo(() => {
         let responseChanged = selectedResponse !== user.response
