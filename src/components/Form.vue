@@ -16,7 +16,7 @@ export interface Events {
 </script>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted } from 'vue';
+import { onMounted } from 'vue';
 
 const props = defineProps<Props>();
 const emit = defineEmits<Events>();

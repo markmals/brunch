@@ -3,7 +3,7 @@ import { RadioGroup, RadioGroupLabel } from '@headlessui/vue';
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import type { User } from '@prisma/client/edge';
 import { Response as UserResponse } from '@prisma/client/edge';
-import { computed, defineProps, effect, ref } from 'vue';
+import { computed, effect, ref } from 'vue';
 
 import Form, { NavigationState } from './Form.vue';
 import PlusOneButtons from './PlusOneButtons.vue';
