@@ -44,7 +44,7 @@ let isDirty = computed(() => {
     return responseChanged || nameChanged || plusOneChanged || dietChanged;
 });
 
-let isYes = computed(() => selectedResponse.value === 'YES');
+let isYes = computed(() => selectedResponse.value === UserResponse.YES);
 let isSelected = computed(() => !!selectedResponse.value);
 
 let title = computed(() => {
@@ -66,6 +66,17 @@ let description = computed(() => {
             return 'When you know for sure, you can come back and update your response.';
         case UserResponse.NO:
             return "Maybe we'll see you next time.";
+    }
+});
+
+let buttonTitle = computed(() => {
+    let isIdle = navigation.value === 'idle';
+    let hasResponed = !!user.value?.response;
+
+    if (isIdle) {
+        return `${hasResponed ? 'Update' : 'Submit'} Response`;
+    } else {
+        return hasResponed ? 'Updating...' : 'Submitting...';
     }
 });
 
@@ -227,15 +238,7 @@ const OPTIONS: Option[] = [
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </template>
-                        {{
-                            navigation !== 'idle'
-                                ? user?.response
-                                    ? 'Updating...'
-                                    : 'Submitting...'
-                                : user?.response
-                                ? 'Update Response'
-                                : 'Submit Response'
-                        }}
+                        {{ buttonTitle }}
                     </button>
                 </div>
             </Form>
