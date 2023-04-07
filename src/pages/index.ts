@@ -1,5 +1,5 @@
 export async function get() {
-    return Response.redirect(process.env.GATE_URL!)
+    return Response.redirect(import.meta.env.GATE_URL!);
 }
 
 // TODO: Admin page

@@ -1,61 +1,53 @@
 ---
-import Card from "../components/Card.astro"
-import Header from "../components/Header.astro"
-import InfoCard from "../components/InfoCard.astro"
-import Menu from "../components/Menu.astro"
-import { Rsvp } from "../components/Rsvp"
-import { eggsBenidictMenu } from "../data/menu"
-import { db } from "../lib/db.server"
+import Card from '../components/Card.astro';
+import Header from '../components/Header.astro';
+import InfoCard from '../components/InfoCard.astro';
+import Menu from '../components/Menu.astro';
+import Rsvp from '../components/Rsvp.vue';
+import { aprilBrunchMenu } from '../data/menus';
+import { db } from '../lib/db.server';
 
-let mapboxToken = import.meta.env.MAPBOX_TOKEN!
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+let mapboxToken = import.meta.env.MAPBOX_TOKEN!;
 
 // TODO: Change map link based on user agent
-let mapLink = "https://maps.apple.com/?daddr=1416+Berene+Ave"
+let mapLink = 'https://maps.apple.com/?daddr=1416+Berene+Ave';
 
-let shortCode = Astro.url.pathname.replace("/", "")
-let user = await db.user.findFirst({ where: { shortCode } })
+let shortCode = Astro.url.pathname.replace('/', '');
+let user = await db.user.findFirst({ where: { shortCode } });
+
+const title = 'Brunch Invite • 4/22';
+const description = "You are invited to brunch at Mark's house!";
 
 if (!user) {
-    Astro.redirect(import.meta.env.GATE_URL!)
+    Astro.redirect(import.meta.env.GATE_URL!);
 }
 ---
 
-<html class="h-full bg-slate-50" lang="en">
+<html class="h-full bg-slate-50 dark:bg-black" lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" href="favicon.png" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>Brunch • 4/16</title>
-        <style is:global>
-            @import "mapbox-gl/dist/mapbox-gl.css";
-
-            @tailwind base;
-            @tailwind components;
-            @tailwind utilities;
-
-            .hero {
-                background-image: var(--hero-image);
-            }
-
-            .inner-border {
-                outline: 1px solid rgba(0, 0, 0, 0.2);
-                outline-offset: -1px;
-            }
-        </style>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content="You're invited to brunch!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="mimosas.webp" />
+        <meta property="og:url" content={Astro.url} />
+        <meta property="og:description" content={description} />
     </head>
     <body class="h-full">
-        <main class="mx-auto flex max-w-7xl flex-col gap-6 pb-10 sm:py-10 sm:px-8 lg:px-28">
-            <Header image="mimosas.jpg" title="Brunch" />
+        <main class="mx-auto flex max-w-7xl flex-col gap-6 pb-10 sm:px-8 sm:py-10 lg:px-28">
+            <Header image="mimosas.webp" title="Brunch" />
             <Card class="p-0">
-                <!-- FIXME: Only works with `client:only` -->
-                <!-- Otherwise I get the error: -->
-                <!-- createUniqueId cannot be used under non-hydrating context -->
-                <Rsvp user={user} client:only />
+                <Rsvp user={user} client:load />
             </Card>
 
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <Menu menu={eggsBenidictMenu} />
+                <Menu menu={aprilBrunchMenu} />
                 <InfoCard mapLink={mapLink} mapboxToken={mapboxToken} />
                 <!-- TODO: Display a list of respondants and how they responded? -->
             </div>

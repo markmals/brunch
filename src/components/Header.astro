@@ -1,16 +1,16 @@
 ---
 export interface Props {
-    title: string
-    image: string
+    title: string;
+    image: string;
 }
 
-let { title, image } = Astro.props
+let { title, image } = Astro.props;
+let imageURL = `url(/${image})`;
 ---
 
 <div class="h-72 shadow-none sm:h-96 sm:rounded-lg sm:shadow">
     <div
         class="hero flex h-full w-full flex-col justify-start bg-cover px-4 py-5 sm:rounded-lg sm:px-6"
-        style={`--hero-image: url('/${image}')`}
     >
         <div
             class="flex flex-col gap-2 rounded bg-[rgba(0,0,0,0.5)] p-4 text-white drop-shadow sm:bg-transparent"
@@ -22,3 +22,9 @@ let { title, image } = Astro.props
         </div>
     </div>
 </div>
+
+<style define:vars={{ 'hero-image': imageURL }}>
+    .hero {
+        background-image: var(--hero-image);
+    }
+</style>
