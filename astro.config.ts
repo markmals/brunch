@@ -1,4 +1,4 @@
-import vercel from '@astrojs/vercel/edge';
+import vercel from '@astrojs/vercel/serverless';
 import vue from '@astrojs/vue';
 import { defineConfig } from 'astro/config';
 import tailwind from './tailwind-integration';
