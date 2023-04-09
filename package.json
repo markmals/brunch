@@ -8,7 +8,8 @@
         "generate": "prisma generate --data-proxy",
         "start": "astro dev",
         "build": "astro build",
-        "preview": "astro preview"
+        "preview": "astro preview",
+        "postinstall": "npm run generate"
     },
     "dependencies": {
         "@astrojs/vercel": "^3.2.1",
