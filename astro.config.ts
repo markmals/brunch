@@ -10,7 +10,7 @@ export default defineConfig({
     vite: {
         resolve: {
             alias: {
-                '@prisma/client/edge': './node_modules/@prisma/client/edge.js',
+                '.prisma/client/edge': './node_modules/.prisma/client/edge.js',
             },
         },
     },
