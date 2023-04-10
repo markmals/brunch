@@ -1,0 +1,55 @@
+---
+import type { Menu } from '../data/menu';
+import Card from './Card.astro';
+
+export interface Props {
+    menu: Menu;
+}
+
+let { menu } = Astro.props;
+---
+
+<Card>
+    <div class="flex flex-col items-center justify-center gap-6 py-2">
+        <h2 class="font-serif text-4xl font-extrabold capitalize text-gray-800 dark:text-gray-200">
+            {menu.title ?? 'Menu'}
+        </h2>
+        <div class="flex flex-col gap-12">
+            {
+                menu.items.map(item => (
+                    <div class="flex flex-col items-center gap-6">
+                        <img
+                            alt={item.imageAlt ?? ''}
+                            class="inner-border h-64 w-full rounded object-cover"
+                            src={item.imageUrl}
+                        />
+                        <div class="flex flex-col items-center gap-2 divide-y divide-gray-900/10 text-center dark:divide-gray-100/5">
+                            <h3 class="w-full pt-2 font-serif text-3xl text-orange-700">
+                                {item.course}
+                            </h3>
+                            <span class="w-full pt-2 text-lg font-light uppercase text-gray-500 dark:text-gray-400">
+                                {item.dish}
+                            </span>
+                            <span class="w-full pt-2 text-sm text-gray-800 dark:text-gray-500">
+                                {item.description}
+                            </span>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</Card>
+
+<style>
+    .inner-border {
+        outline: 1px solid rgba(0, 0, 0, 0.2);
+        outline-offset: -1px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .inner-border {
+            outline: none;
+        }
+    }
+</style>

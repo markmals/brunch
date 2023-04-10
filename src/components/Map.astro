@@ -1,0 +1,46 @@
+---
+export interface Props {
+    token: string;
+}
+
+let { token } = Astro.props;
+---
+
+<script>
+    import { LngLatLike, Map, Marker } from 'mapbox-gl';
+
+    const center: LngLatLike = [-97.68353394771864, 30.28148032602474];
+
+    let container = document.querySelector('[data-mapbox-token]') as HTMLElement;
+    let accessToken = container.dataset.mapboxToken!;
+    container.removeAttribute('data-mapbox-token');
+
+    let map = new Map({
+        accessToken,
+        container,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center,
+        zoom: 14,
+        dragPan: false,
+        scrollZoom: false,
+        attributionControl: false,
+    });
+
+    let marker = new Marker({ color: '#4f46e5' });
+    marker.setLngLat(center);
+    marker.addTo(map);
+
+    let mediaList = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function getMapURL(matches: boolean): string {
+        return matches ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/streets-v12';
+    }
+
+    map.setStyle(getMapURL(mediaList.matches));
+
+    mediaList.addEventListener('change', (event: MediaQueryListEvent) =>
+        map.setStyle(getMapURL(event.matches))
+    );
+</script>
+
+<div class="h-52 w-full rounded-md border border-black/25" data-mapbox-token={token}></div>

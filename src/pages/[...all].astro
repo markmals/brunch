@@ -1,0 +1,56 @@
+---
+import Card from '../components/Card.astro';
+import Header from '../components/Header.astro';
+import InfoCard from '../components/InfoCard.astro';
+import Menu from '../components/Menu.astro';
+import Rsvp from '../components/Rsvp.vue';
+import { db } from '../lib/db.server';
+import { aprilBrunchMenu } from '../lib/menus';
+
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+let mapboxToken = import.meta.env.MAPBOX_TOKEN!;
+
+// TODO: Change map link based on user agent
+let mapLink = 'https://maps.apple.com/?daddr=1416+Berene+Ave';
+
+let shortCode = Astro.url.pathname.replace('/', '');
+let user = await db.user.findFirst({ where: { shortCode } });
+
+const title = 'Brunch Invite • 4/22';
+const description = "You are invited to brunch at Mark's house!";
+
+if (!user) {
+    Astro.redirect(import.meta.env.GATE_URL!);
+}
+---
+
+<html class="h-full bg-slate-50 dark:bg-black" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/png" href="favicon.png" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content="You're invited to brunch!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="mimosas.webp" />
+        <meta property="og:url" content={Astro.url} />
+        <meta property="og:description" content={description} />
+    </head>
+    <body class="h-full">
+        <main class="mx-auto flex max-w-7xl flex-col gap-6 pb-10 sm:px-8 sm:py-10 lg:px-28">
+            <Header image="mimosas.webp" title="Brunch" />
+            <Card class="p-0">
+                <Rsvp user={user} client:load />
+            </Card>
+
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <Menu menu={aprilBrunchMenu} />
+                <InfoCard mapLink={mapLink} mapboxToken={mapboxToken} />
+                <!-- TODO: Display a list of respondants and how they responded? -->
+            </div>
+        </main>
+    </body>
+</html>
