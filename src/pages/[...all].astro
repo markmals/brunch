@@ -13,7 +13,7 @@ console.log('log')
 console.log('env: ', import.meta.env)
 console.log('log')
 
-let mapboxToken = import.meta.env.MAPBOX_TOKEN!;
+let mapboxToken = import.meta.env.PUBLIC_MAPBOX_TOKEN!;
 
 // TODO: Change map link based on user agent
 let mapLink = 'https://maps.apple.com/?daddr=1416+Berene+Ave';
@@ -25,7 +25,7 @@ const title = 'Brunch Invite • 4/22';
 const description = "You are invited to brunch at Mark's house!";
 
 if (!user) {
-    Astro.redirect(import.meta.env.GATE_URL!);
+    Astro.redirect(import.meta.env.PUBLIC_GATE_URL!);
 }
 ---
 
