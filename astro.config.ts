@@ -6,7 +6,7 @@ import tailwind from './tailwind-integration';
 export default defineConfig({
     output: 'server',
     adapter: vercel(),
-    integrations: [vue(), tailwind()],
+    integrations: [vue({ appEntrypoint: '/src/pages/_app' }), tailwind()],
     vite: {
         resolve: {
             alias: {

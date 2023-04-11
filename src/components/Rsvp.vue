@@ -3,7 +3,7 @@ import { RadioGroup, RadioGroupLabel } from '@headlessui/vue';
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import type { User } from '@prisma/client/edge';
 import { Response as UserResponse } from '@prisma/client/edge';
-import { computed, effect, fromSignal, signal } from '../lib/signals';
+import { computed, effect, signal } from '../lib/signals';
 
 import Form, { NavigationState } from './Form.vue';
 import PlusOneButtons from './PlusOneButtons.vue';
@@ -24,10 +24,10 @@ let name = signal(user()?.name);
 let plusOne = signal(user()?.plusOne);
 let dietaryRestrictions = signal(user()?.dietaryRestrictions);
 
-let selectedResponseModel = fromSignal(selectedResponse);
-let nameModel = fromSignal(name);
-let plusOneModel = fromSignal(plusOne);
-let dietaryRestrictionsModel = fromSignal(dietaryRestrictions);
+// let selectedResponseModel = fromSignal(selectedResponse);
+// let nameModel = fromSignal(name);
+// let plusOneModel = fromSignal(plusOne);
+// let dietaryRestrictionsModel = fromSignal(dietaryRestrictions);
 
 effect(() => {
     selectedResponse.set(user()?.response ?? undefined);
@@ -93,7 +93,8 @@ const OPTIONS: Option[] = [
 <template>
     <RadioGroup
         class="flex w-full flex-col items-center justify-center px-4 py-5 sm:flex-row sm:justify-between sm:px-6"
-        v-model="selectedResponseModel"
+        :modelValue="selectedResponse()"
+        @update:modelValue="selectedResponse.set($event)"
     >
         <RadioGroupLabel
             class="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0"
@@ -148,7 +149,7 @@ const OPTIONS: Option[] = [
                         <input
                             class="block w-full rounded-md border-0 bg-gray-50 py-1.5 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:focus:bg-black sm:text-sm sm:leading-6"
                             id="name"
-                            v-model="nameModel"
+                            v-signal-model="name"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
@@ -158,7 +159,8 @@ const OPTIONS: Option[] = [
                     <template v-if="isYes()">
                         <RadioGroup
                             class="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
-                            v-model="plusOneModel"
+                            :modelValue="plusOne()"
+                            @update:modelValue="plusOne.set($event)"
                             name="plus-one"
                         >
                             <div class="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
@@ -204,7 +206,7 @@ const OPTIONS: Option[] = [
                             <textarea
                                 class="block w-full max-w-2xl rounded-md border-0 bg-gray-50 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:placeholder:text-gray-500 dark:focus:bg-black sm:py-1.5 sm:text-sm sm:leading-6"
                                 id="dietary-restrictions"
-                                v-model="dietaryRestrictionsModel"
+                                v-signal-model="dietaryRestrictions"
                                 name="dietary-restrictions"
                                 placeholder="e.g. wheat, peanuts, dairy, shrimp, soy, etc."
                                 :rows="2"
