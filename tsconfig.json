@@ -3,6 +3,7 @@
     "compilerOptions": {
         "strict": true,
         "skipLibCheck": true,
-        "jsx": "preserve"
+        "jsx": "preserve",
+        "types": ["@vue-macros/reactivity-transform/macros-global"]
     }
 }
