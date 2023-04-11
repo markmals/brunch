@@ -3,7 +3,7 @@ import { RadioGroup, RadioGroupLabel } from '@headlessui/vue';
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import type { User } from '@prisma/client/edge';
 import { Response as UserResponse } from '@prisma/client/edge';
-import { computed, effect, ref } from 'vue';
+import { computed, effect, fromSignal, signal } from '../lib/signals';
 
 import Form, { NavigationState } from './Form.vue';
 import PlusOneButtons from './PlusOneButtons.vue';
@@ -15,40 +15,43 @@ interface Props {
 
 let { user: initialUser } = defineProps<Props>();
 
-let user = ref(initialUser ?? undefined);
+let user = signal(initialUser ?? undefined);
 
-let navigation = ref<NavigationState>('idle');
+let navigation = signal<NavigationState>('idle');
 
-let selectedResponse = ref(user.value?.response ?? undefined);
+let selectedResponse = signal(user()?.response ?? undefined);
+let name = signal(user()?.name);
+let plusOne = signal(user()?.plusOne);
+let dietaryRestrictions = signal(user()?.dietaryRestrictions);
 
-let name = ref(user.value?.name);
-let plusOne = ref(user.value?.plusOne);
-let dietaryRestrictions = ref(user.value?.dietaryRestrictions);
+let selectedResponseModel = fromSignal(selectedResponse);
+let nameModel = fromSignal(name);
+let plusOneModel = fromSignal(plusOne);
+let dietaryRestrictionsModel = fromSignal(dietaryRestrictions);
 
 effect(() => {
-    selectedResponse.value = user.value?.response ?? undefined;
-    name.value = user.value?.name;
-    plusOne.value = user.value?.plusOne;
-    dietaryRestrictions.value = user.value?.dietaryRestrictions;
+    selectedResponse.set(user()?.response ?? undefined);
+    name.set(user()?.name);
+    plusOne.set(user()?.plusOne);
+    dietaryRestrictions.set(user()?.dietaryRestrictions);
 });
 
 let isDirty = computed(() => {
-    let responseChanged = selectedResponse.value !== user.value?.response;
-    let nameChanged = name.value !== user.value?.name;
-    let plusOneChanged =
-        selectedResponse.value === UserResponse.YES && plusOne.value !== user.value?.plusOne;
+    let responseChanged = selectedResponse() !== user()?.response;
+    let nameChanged = name() !== user()?.name;
+    let plusOneChanged = selectedResponse() === UserResponse.YES && plusOne() !== user()?.plusOne;
     let dietChanged =
-        selectedResponse.value === UserResponse.YES &&
-        dietaryRestrictions.value !== user.value?.dietaryRestrictions;
+        selectedResponse() === UserResponse.YES &&
+        dietaryRestrictions() !== user()?.dietaryRestrictions;
 
     return responseChanged || nameChanged || plusOneChanged || dietChanged;
 });
 
-let isYes = computed(() => selectedResponse.value === UserResponse.YES);
-let isSelected = computed(() => !!selectedResponse.value);
+let isYes = computed(() => selectedResponse() === UserResponse.YES);
+let isSelected = computed(() => !!selectedResponse());
 
 let title = computed(() => {
-    switch (selectedResponse.value) {
+    switch (selectedResponse()) {
         case UserResponse.YES:
             return 'Hooray! 🥳';
         case UserResponse.MAYBE:
@@ -59,7 +62,7 @@ let title = computed(() => {
 });
 
 let description = computed(() => {
-    switch (selectedResponse.value) {
+    switch (selectedResponse()) {
         case UserResponse.YES:
             return "I just need some info and then you'll be confirmed!";
         case UserResponse.MAYBE:
@@ -70,8 +73,8 @@ let description = computed(() => {
 });
 
 let buttonTitle = computed(() => {
-    let isIdle = navigation.value === 'idle';
-    let hasResponed = !!user.value?.response;
+    let isIdle = navigation() === 'idle';
+    let hasResponed = !!user()?.response;
 
     if (isIdle) {
         return `${hasResponed ? 'Update' : 'Submit'} Response`;
@@ -90,7 +93,7 @@ const OPTIONS: Option[] = [
 <template>
     <RadioGroup
         class="flex w-full flex-col items-center justify-center px-4 py-5 sm:flex-row sm:justify-between sm:px-6"
-        v-model="selectedResponse"
+        v-model="selectedResponseModel"
     >
         <RadioGroupLabel
             class="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0"
@@ -105,31 +108,31 @@ const OPTIONS: Option[] = [
         </div>
     </RadioGroup>
 
-    <template v-if="isSelected">
+    <template v-if="isSelected()">
         <hr class="border-t border-black/10 dark:border-white/5" />
 
         <div class="py-6">
             <h3 class="px-6 text-base font-semibold leading-6 text-gray-900 dark:text-gray-50">
-                {{ title ?? 'Unknown' }}
+                {{ title() ?? 'Unknown' }}
             </h3>
             <div class="mt-2 max-w-xl px-6 text-sm text-gray-500">
-                <p>{{ description ?? 'Unknown' }}</p>
+                <p>{{ description() ?? 'Unknown' }}</p>
             </div>
 
             <Form
                 class="mt-5 flex w-full flex-col items-end"
                 action="/response"
                 method="POST"
-                @state="navigation = $event"
-                @response-data="user = $event"
+                @state="navigation.set($event)"
+                @response-data="user.set($event)"
             >
-                <input id="short-code" name="short-code" type="hidden" :value="user?.shortCode" />
+                <input id="short-code" name="short-code" type="hidden" :value="user()?.shortCode" />
 
                 <input
                     id="response"
                     name="response"
                     type="hidden"
-                    :value="selectedResponse ?? ''"
+                    :value="selectedResponse() ?? ''"
                 />
 
                 <div class="flex w-full flex-col divide-y divide-black/10 px-6 dark:divide-white/5">
@@ -145,17 +148,17 @@ const OPTIONS: Option[] = [
                         <input
                             class="block w-full rounded-md border-0 bg-gray-50 py-1.5 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:focus:bg-black sm:text-sm sm:leading-6"
                             id="name"
-                            v-model="name"
+                            v-model="nameModel"
                             name="name"
                             placeholder="Jane Doe"
                             type="text"
                         />
                     </div>
 
-                    <template v-if="isYes">
+                    <template v-if="isYes()">
                         <RadioGroup
                             class="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
-                            v-model="plusOne"
+                            v-model="plusOneModel"
                             name="plus-one"
                         >
                             <div class="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
@@ -185,8 +188,9 @@ const OPTIONS: Option[] = [
                                     class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
                                     for="dietary-restrictions"
                                 >
-                                    Do you {{ plusOne && 'or your plus-one ' }} have any dietary
-                                    restrictions?
+                                    Do you
+                                    <template v-if="plusOne()">or your plus-one</template> have any
+                                    dietary restrictions?
                                 </label>
 
                                 <p
@@ -200,7 +204,7 @@ const OPTIONS: Option[] = [
                             <textarea
                                 class="block w-full max-w-2xl rounded-md border-0 bg-gray-50 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:placeholder:text-gray-500 dark:focus:bg-black sm:py-1.5 sm:text-sm sm:leading-6"
                                 id="dietary-restrictions"
-                                v-model="dietaryRestrictions"
+                                v-model="dietaryRestrictionsModel"
                                 name="dietary-restrictions"
                                 placeholder="e.g. wheat, peanuts, dairy, shrimp, soy, etc."
                                 :rows="2"
@@ -214,10 +218,10 @@ const OPTIONS: Option[] = [
                 <div class="flex items-center justify-end gap-x-6 px-6 pb-2 pt-6">
                     <button
                         class="flex flex-row items-center justify-center rounded-md px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 enabled:bg-indigo-600 enabled:text-white enabled:shadow-sm enabled:hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 dark:enabled:bg-indigo-700 dark:enabled:hover:bg-indigo-600 dark:disabled:bg-gray-800 dark:disabled:text-slate-500"
-                        :disabled="!isDirty || navigation !== 'idle'"
+                        :disabled="!isDirty() || navigation() !== 'idle'"
                         type="submit"
                     >
-                        <template v-if="navigation !== 'idle'">
+                        <template v-if="navigation() !== 'idle'">
                             <div role="status">
                                 <svg
                                     class="mr-2 h-4 w-4 animate-spin fill-gray-500 text-gray-400"
@@ -238,7 +242,7 @@ const OPTIONS: Option[] = [
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </template>
-                        {{ buttonTitle }}
+                        {{ buttonTitle() }}
                     </button>
                 </div>
             </Form>
