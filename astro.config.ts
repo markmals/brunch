@@ -1,16 +1,17 @@
+import react from '@astrojs/react';
 import vercel from '@astrojs/vercel/edge';
-import vue from '@astrojs/vue';
+// import reactRefresh from '@vitejs/plugin-react';
 import { defineConfig } from 'astro/config';
 import tailwind from './tailwind-integration';
-
-import ReactivityTransform from '@vue-macros/reactivity-transform';
 
 export default defineConfig({
     output: 'server',
     adapter: vercel(),
-    integrations: [vue(), tailwind()],
+    integrations: [react(), tailwind()],
     vite: {
-        plugins: [ReactivityTransform.vite()],
+        // Causes clients not to get hydrated
+        // Still on the search for a way to enable HMR
+        // plugins: [reactRefresh()],
         resolve: {
             alias: {
                 '.prisma/client/edge': './node_modules/.prisma/client/edge.js',

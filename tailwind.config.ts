@@ -2,7 +2,7 @@ import forms from '@tailwindcss/forms';
 import type { Config } from 'tailwindcss';
 
 export default {
-    content: ['./src/**/*.{astro,vue}'],
+    content: ['./src/**/*.{astro,tsx}'],
     theme: {
         fontFamily: {
             sans: [

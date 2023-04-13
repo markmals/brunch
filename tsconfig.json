@@ -3,7 +3,7 @@
     "compilerOptions": {
         "strict": true,
         "skipLibCheck": true,
-        "jsx": "preserve",
-        "types": ["@vue-macros/reactivity-transform/macros-global"]
+        "jsx": "react-jsx",
+        "jsxImportSource": "react"
     }
 }
