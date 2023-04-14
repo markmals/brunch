@@ -1,7 +1,8 @@
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import type { User } from '@prisma/client/edge';
 import { Response as UserResponse } from '@prisma/client/edge';
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'preact/hooks';
+import type { JSXInternal } from 'preact/src/jsx';
 import { Label, RadioGroup, SSRProvider } from 'react-aria-components';
 import { Form } from './Form';
 import { PlusOneButtons } from './PlusOneButtons';
@@ -9,8 +10,8 @@ import { RsvpButton } from './RsvpButton';
 import { For } from './control-flow/For';
 import { Show } from './control-flow/Show';
 
-type InputEvent = FormEvent<HTMLInputElement>;
-type TextAreaEvent = FormEvent<HTMLTextAreaElement>;
+type InputEvent = JSXInternal.TargetedEvent<HTMLInputElement, Event>;
+type TextAreaEvent = JSXInternal.TargetedEvent<HTMLTextAreaElement, Event>;
 
 export function Rsvp({ user: initialUser }: Rsvp.Props) {
     let [user, setUser] = useState(initialUser ?? undefined);

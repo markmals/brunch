@@ -1,21 +1,28 @@
-import react from '@astrojs/react';
+import preact from '@astrojs/preact';
 import vercel from '@astrojs/vercel/edge';
-// import reactRefresh from '@vitejs/plugin-react';
 import { defineConfig } from 'astro/config';
 import tailwind from './tailwind-integration';
 
 export default defineConfig({
     output: 'server',
     adapter: vercel(),
-    integrations: [react(), tailwind()],
+    integrations: [preact({ compat: true }), tailwind()],
     vite: {
-        // Causes clients not to get hydrated
-        // Still on the search for a way to enable HMR
-        // plugins: [reactRefresh()],
+        // plugins: [prefresh()],
         resolve: {
             alias: {
                 '.prisma/client/edge': './node_modules/.prisma/client/edge.js',
             },
+        },
+        ssr: {
+            noExternal: [
+                'react-aria',
+                'react-stately',
+                '@react-stately/*',
+                '@react-aria/*',
+                'react-aria-components',
+                'downshift',
+            ],
         },
     },
 });

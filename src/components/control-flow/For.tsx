@@ -1,9 +1,9 @@
-import { Fragment, ReactNode } from 'react';
+import { ComponentChildren, Fragment } from 'preact';
 
 export namespace For {
     export interface Props<T> {
         each: T[];
-        children(item: T): ReactNode;
+        children(item: T): ComponentChildren;
     }
 }
 

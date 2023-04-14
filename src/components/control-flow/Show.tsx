@@ -1,9 +1,9 @@
-import { Fragment, ReactNode, ReactNode } from 'react';
+import { ComponentChildren, Fragment } from 'preact';
 
 export namespace Show {
     export interface Props {
         when: boolean;
-        children: ReactNode;
+        children: ComponentChildren;
     }
 }
 

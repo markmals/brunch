@@ -36,7 +36,7 @@ export function RsvpButton({ option }: RsvpButton.Props) {
             value={option.response}
         >
             {({ isSelected }) => {
-                const Icon = option.icon;
+                const Icon = option.icon.render;
                 return (
                     <div className="flex select-none flex-row items-center justify-center gap-x-2">
                         <Icon

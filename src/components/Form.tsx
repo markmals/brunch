@@ -1,4 +1,5 @@
-import type { FormEvent, ReactNode } from 'react';
+import type { ComponentChildren } from 'preact';
+import type { JSXInternal } from 'preact/src/jsx';
 
 export namespace Form {
     export type NavigationState = 'idle' | 'submitting' | 'submitted' | 'error';
@@ -8,7 +9,7 @@ export namespace Form {
         action: string;
         method: string;
 
-        children: ReactNode;
+        children: ComponentChildren;
 
         onState?(value: NavigationState): void;
         onOptomisticData?(value: FormData): void;
@@ -18,7 +19,7 @@ export namespace Form {
 }
 
 export function Form({ onState, onOptomisticData, onError, onResponseData, ...props }: Form.Props) {
-    async function onSubmit($event: FormEvent<HTMLFormElement>) {
+    async function onSubmit($event: JSXInternal.TargetedEvent<HTMLFormElement, Event>) {
         $event.preventDefault();
         let form = $event.currentTarget;
         let data = new FormData(form);
