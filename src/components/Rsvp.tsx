@@ -96,7 +96,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                     Can you make it?
                 </Label>
 
-                <div className="grid w-full grid-cols-1 items-center gap-y-6 sm:w-auto sm:grid-cols-3 sm:gap-x-4">
+                <div class="grid w-full grid-cols-1 items-center gap-y-6 sm:w-auto sm:grid-cols-3 sm:gap-x-4">
                     <For each={Rsvp.OPTIONS}>
                         {option => <RsvpButton option={option} key={option.response} />}
                     </For>
@@ -104,18 +104,18 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
             </RadioGroup>
 
             <Show when={isSelected.value}>
-                <hr className="border-t border-black/10 dark:border-white/5" />
+                <hr class="border-t border-black/10 dark:border-white/5" />
 
-                <div className="py-6">
-                    <h3 className="px-6 text-base font-semibold leading-6 text-gray-900 dark:text-gray-50">
+                <div class="py-6">
+                    <h3 class="px-6 text-base font-semibold leading-6 text-gray-900 dark:text-gray-50">
                         {title}
                     </h3>
-                    <div className="mt-2 max-w-xl px-6 text-sm text-gray-500">
+                    <div class="mt-2 max-w-xl px-6 text-sm text-gray-500">
                         <p>{description}</p>
                     </div>
 
                     <Form
-                        className="mt-5 flex w-full flex-col items-end"
+                        class="mt-5 flex w-full flex-col items-end"
                         action="/response"
                         method="POST"
                         onState={$event => (navigation.value = $event)}
@@ -135,16 +135,16 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                             value={selectedResponse.value ?? ''}
                         />
 
-                        <div className="flex w-full flex-col divide-y divide-black/10 px-6 dark:divide-white/5">
-                            <div className="grid grid-rows-2 items-center border-t border-black/10 py-6 dark:border-white/5 sm:grid-cols-2 sm:grid-rows-none">
+                        <div class="flex w-full flex-col divide-y divide-black/10 px-6 dark:divide-white/5">
+                            <div class="grid grid-rows-2 items-center border-t border-black/10 py-6 dark:border-white/5 sm:grid-cols-2 sm:grid-rows-none">
                                 <label
-                                    className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
-                                    htmlFor="name"
+                                    class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
+                                    for="name"
                                 >
                                     Name
                                 </label>
                                 <input
-                                    className="block w-full rounded-md border-0 bg-gray-50 py-1.5 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:focus:bg-black sm:text-sm sm:leading-6"
+                                    class="block w-full rounded-md border-0 bg-gray-50 py-1.5 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:focus:bg-black sm:text-sm sm:leading-6"
                                     id="name"
                                     value={name}
                                     onInput={$event => setName($event)}
@@ -161,7 +161,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                     onChange={$event => (plusOne.value = $event === 'true')}
                                     name="plus-one"
                                 >
-                                    <div className="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
+                                    <div class="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
                                         <Label className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50">
                                             Will you be bringing a plus-one?
                                         </Label>
@@ -177,11 +177,11 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                     <PlusOneButtons />
                                 </RadioGroup>
 
-                                <div className="grid auto-rows-min gap-4 py-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:pb-6">
-                                    <div className="flex flex-col justify-center gap-2 sm:gap-0">
+                                <div class="grid auto-rows-min gap-4 py-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:pb-6">
+                                    <div class="flex flex-col justify-center gap-2 sm:gap-0">
                                         <label
-                                            className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
-                                            htmlFor="dietary-restrictions"
+                                            class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
+                                            for="dietary-restrictions"
                                         >
                                             Do you{' '}
                                             <Show when={!!plusOne.value}> or your plus-one </Show>
@@ -189,7 +189,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                         </label>
 
                                         <p
-                                            className="text-sm text-gray-500"
+                                            class="text-sm text-gray-500"
                                             id="dietary-restrictions-description"
                                         >
                                             Leave blank if not applicable
@@ -197,7 +197,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                     </div>
 
                                     <textarea
-                                        className="block w-full max-w-2xl rounded-md border-0 bg-gray-50 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:placeholder:text-gray-500 dark:focus:bg-black sm:py-1.5 sm:text-sm sm:leading-6"
+                                        class="block w-full max-w-2xl rounded-md border-0 bg-gray-50 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black dark:text-gray-50 dark:ring-gray-900 dark:placeholder:text-gray-500 dark:focus:bg-black sm:py-1.5 sm:text-sm sm:leading-6"
                                         id="dietary-restrictions"
                                         value={dietaryRestrictions}
                                         onInput={setDietaryRestrictions}
@@ -209,18 +209,18 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                             </Show>
                         </div>
 
-                        <hr className="w-full border-t border-black/10 dark:border-white/5" />
+                        <hr class="w-full border-t border-black/10 dark:border-white/5" />
 
-                        <div className="flex items-center justify-end gap-x-6 px-6 pb-2 pt-6">
+                        <div class="flex items-center justify-end gap-x-6 px-6 pb-2 pt-6">
                             <button
-                                className="flex flex-row items-center justify-center rounded-md px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 enabled:bg-indigo-600 enabled:text-white enabled:shadow-sm enabled:hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 dark:enabled:bg-indigo-700 dark:enabled:hover:bg-indigo-600 dark:disabled:bg-gray-800 dark:disabled:text-slate-500"
+                                class="flex flex-row items-center justify-center rounded-md px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 enabled:bg-indigo-600 enabled:text-white enabled:shadow-sm enabled:hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 dark:enabled:bg-indigo-700 dark:enabled:hover:bg-indigo-600 dark:disabled:bg-gray-800 dark:disabled:text-slate-500"
                                 disabled={buttonIsDisabled}
                                 type="submit"
                             >
                                 <Show when={navigation.value !== 'idle'}>
                                     <div role="status">
                                         <svg
-                                            className="mr-2 h-4 w-4 animate-spin fill-gray-500 text-gray-400"
+                                            class="mr-2 h-4 w-4 animate-spin fill-gray-500 text-gray-400"
                                             aria-hidden="true"
                                             fill="none"
                                             viewBox="0 0 100 101"
@@ -235,7 +235,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                                 fill="currentFill"
                                             />
                                         </svg>
-                                        <span className="sr-only">Loading...</span>
+                                        <span class="sr-only">Loading...</span>
                                     </div>
                                 </Show>
                                 {buttonTitle}

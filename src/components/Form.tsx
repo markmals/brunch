@@ -5,7 +5,7 @@ export namespace Form {
     export type NavigationState = 'idle' | 'submitting' | 'submitted' | 'error';
 
     export interface Props {
-        className?: string;
+        class?: string;
         action: string;
         method: string;
 
