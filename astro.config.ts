@@ -1,5 +1,6 @@
 import preact from '@astrojs/preact';
 import vercel from '@astrojs/vercel/edge';
+import prefresh from '@prefresh/vite';
 import { defineConfig } from 'astro/config';
 import tailwind from './tailwind-integration';
 
@@ -8,7 +9,7 @@ export default defineConfig({
     adapter: vercel(),
     integrations: [preact({ compat: true }), tailwind()],
     vite: {
-        // plugins: [prefresh()],
+        plugins: [prefresh()],
         resolve: {
             alias: {
                 '.prisma/client/edge': './node_modules/.prisma/client/edge.js',
@@ -21,7 +22,6 @@ export default defineConfig({
                 '@react-stately/*',
                 '@react-aria/*',
                 'react-aria-components',
-                'downshift',
             ],
         },
     },
