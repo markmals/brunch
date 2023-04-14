@@ -1,27 +1,27 @@
 ---
-import Card from '../components/Card.astro';
-import Header from '../components/Header.astro';
-import InfoCard from '../components/InfoCard.astro';
-import Menu from '../components/Menu.astro';
-import { Rsvp } from '../components/Rsvp';
-import { db } from '../lib/db.server';
-import { aprilBrunchMenu } from '../lib/menus';
+import Card from "../components/Card.astro"
+import Header from "../components/Header.astro"
+import InfoCard from "../components/InfoCard.astro"
+import Menu from "../components/Menu.astro"
+import { Rsvp } from "../components/Rsvp"
+import { db } from "../lib/db.server"
+import { aprilBrunchMenu } from "../lib/menus"
 
-import 'mapbox-gl/dist/mapbox-gl.css';
+import "mapbox-gl/dist/mapbox-gl.css"
 
-let mapboxToken = import.meta.env.PUBLIC_MAPBOX_TOKEN!;
+let mapboxToken = import.meta.env.PUBLIC_MAPBOX_TOKEN!
 
 // TODO: Change map link based on user agent
-let mapLink = 'https://maps.apple.com/?daddr=1416+Berene+Ave';
+let mapLink = "https://maps.apple.com/?daddr=1416+Berene+Ave"
 
-let shortCode = Astro.url.pathname.replace('/', '');
-let user = await db.user.findFirst({ where: { shortCode } });
+let shortCode = Astro.url.pathname.replace("/", "")
+let user = await db.user.findFirst({ where: { shortCode } })
 
-const title = 'Brunch Invite • 4/22';
-const description = "You are invited to brunch at Mark's house!";
+const title = "Brunch Invite • 4/22"
+const description = "You are invited to brunch at Mark's house!"
 
 if (!user) {
-    Astro.redirect(import.meta.env.PUBLIC_GATE_URL!);
+    Astro.redirect(import.meta.env.PUBLIC_GATE_URL!)
 }
 ---
 

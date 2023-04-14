@@ -1,21 +1,21 @@
 ---
-import CalendarDays from 'astro-heroicons/solid/CalendarDays.astro';
-import ChevronRight from 'astro-heroicons/solid/ChevronRight.astro';
-import MapPin from 'astro-heroicons/solid/MapPin.astro';
-import Plus from 'astro-heroicons/solid/Plus.astro';
-import User from 'astro-heroicons/solid/User.astro';
+import CalendarDays from "astro-heroicons/solid/CalendarDays.astro"
+import ChevronRight from "astro-heroicons/solid/ChevronRight.astro"
+import MapPin from "astro-heroicons/solid/MapPin.astro"
+import Plus from "astro-heroicons/solid/Plus.astro"
+import User from "astro-heroicons/solid/User.astro"
 
-import Card from './Card.astro';
-import Map from './Map.astro';
+import Card from "./Card.astro"
+import Map from "./Map.astro"
 
-const googleCalendarDownloadLink = `https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=Nm00OHVmNXY1OHUyMXUxYjhxZGlwaHVyMHUgbWFsc3Ryb21tYXJrQG0&tmsrc=malstrommark%40gmail.com`;
+const googleCalendarDownloadLink = `https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=Nm00OHVmNXY1OHUyMXUxYjhxZGlwaHVyMHUgbWFsc3Ryb21tYXJrQG0&tmsrc=malstrommark%40gmail.com`
 
 export interface Props {
-    mapboxToken: string;
-    mapLink: string;
+    mapboxToken: string
+    mapLink: string
 }
 
-let { mapboxToken, mapLink } = Astro.props;
+let { mapboxToken, mapLink } = Astro.props
 ---
 
 <div class="flex flex-col gap-6">

@@ -1,87 +1,87 @@
-import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useComputed, useSignalEffect as useEffect, useSignal } from '@preact/signals';
-import type { User } from '@prisma/client/edge';
-import { Response as UserResponse } from '@prisma/client/edge';
-import type { JSXInternal } from 'preact/src/jsx';
-import { Label, RadioGroup, SSRProvider } from 'react-aria-components';
-import { Form } from './Form';
-import { PlusOneButtons } from './PlusOneButtons';
-import { RsvpButton } from './RsvpButton';
-import { For } from './control-flow/For';
-import { Show } from './control-flow/Show';
+import { useComputed, useSignalEffect as useEffect, useSignal } from "@preact/signals"
+import type { User } from "@prisma/client/edge"
+import { Response as UserResponse } from "@prisma/client/edge"
+import { CheckOutline, QuestionMarkCircleOutline, XMarkOutline } from "preact-heroicons"
+import type { JSXInternal } from "preact/src/jsx"
+import { Label, RadioGroup, SSRProvider } from "react-aria-components"
+import { Form } from "./Form"
+import { PlusOneButtons } from "./PlusOneButtons"
+import { RsvpButton } from "./RsvpButton"
+import { For } from "./control-flow/For"
+import { Show } from "./control-flow/Show"
 
-type InputEvent = JSXInternal.TargetedEvent<HTMLInputElement, Event>;
-type TextAreaEvent = JSXInternal.TargetedEvent<HTMLTextAreaElement, Event>;
+type InputEvent = JSXInternal.TargetedEvent<HTMLInputElement, Event>
+type TextAreaEvent = JSXInternal.TargetedEvent<HTMLTextAreaElement, Event>
 
 export function Rsvp({ user: initialUser }: Rsvp.Props) {
-    let user = useSignal(initialUser ?? undefined);
+    let user = useSignal(initialUser ?? undefined)
 
-    let navigation = useSignal<Form.NavigationState>('idle');
+    let navigation = useSignal<Form.NavigationState>("idle")
 
-    let selectedResponse = useSignal(user.value?.response);
+    let selectedResponse = useSignal(user.value?.response)
 
-    let name = useSignal(user.value?.name);
-    let plusOne = useSignal(user.value?.plusOne);
-    let dietaryRestrictions = useSignal(user.value?.dietaryRestrictions);
+    let name = useSignal(user.value?.name)
+    let plusOne = useSignal(user.value?.plusOne)
+    let dietaryRestrictions = useSignal(user.value?.dietaryRestrictions)
 
-    const setName = ($event: InputEvent) => (name.value = $event.currentTarget.value);
+    const setName = ($event: InputEvent) => (name.value = $event.currentTarget.value)
     const setDietaryRestrictions = ($event: TextAreaEvent) =>
-        (dietaryRestrictions.value = $event.currentTarget.value);
+        (dietaryRestrictions.value = $event.currentTarget.value)
 
     useEffect(() => {
-        selectedResponse.value = user.value?.response ?? undefined;
-        name.value = user.value?.name;
-        plusOne.value = user.value?.plusOne;
-        dietaryRestrictions.value = user.value?.dietaryRestrictions;
-    });
+        selectedResponse.value = user.value?.response ?? undefined
+        name.value = user.value?.name
+        plusOne.value = user.value?.plusOne
+        dietaryRestrictions.value = user.value?.dietaryRestrictions
+    })
 
     let isDirty = useComputed(() => {
-        let responseChanged = selectedResponse.value !== user.value?.response;
-        let nameChanged = name.value !== user.value?.name;
+        let responseChanged = selectedResponse.value !== user.value?.response
+        let nameChanged = name.value !== user.value?.name
         let plusOneChanged =
-            selectedResponse.value === UserResponse.YES && plusOne.value !== user.value?.plusOne;
+            selectedResponse.value === UserResponse.YES && plusOne.value !== user.value?.plusOne
         let dietChanged =
             selectedResponse.value === UserResponse.YES &&
-            dietaryRestrictions.value !== user.value?.dietaryRestrictions;
-        return responseChanged || nameChanged || plusOneChanged || dietChanged;
-    });
+            dietaryRestrictions.value !== user.value?.dietaryRestrictions
+        return responseChanged || nameChanged || plusOneChanged || dietChanged
+    })
 
-    let isYes = useComputed(() => selectedResponse.value === UserResponse.YES);
-    let isSelected = useComputed(() => !!selectedResponse.value);
+    let isYes = useComputed(() => selectedResponse.value === UserResponse.YES)
+    let isSelected = useComputed(() => !!selectedResponse.value)
 
     let title = useComputed(() => {
         switch (selectedResponse.value) {
             case UserResponse.YES:
-                return 'Hooray! 🥳';
+                return "Hooray! 🥳"
             case UserResponse.MAYBE:
-                return 'No worries 🤠';
+                return "No worries 🤠"
             case UserResponse.NO:
-                return "We'll miss you! 🙁";
+                return "We'll miss you! 🙁"
         }
-    });
+    })
 
     let description = useComputed(() => {
         switch (selectedResponse.value) {
             case UserResponse.YES:
-                return "I just need some info and then you'll be confirmed!";
+                return "I just need some info and then you'll be confirmed!"
             case UserResponse.MAYBE:
-                return 'When you know for sure, you can come back and update your response.';
+                return "When you know for sure, you can come back and update your response."
             case UserResponse.NO:
-                return "Maybe we'll see you next time.";
+                return "Maybe we'll see you next time."
         }
-    });
+    })
 
     let buttonTitle = useComputed(() => {
-        let isIdle = navigation.value === 'idle';
-        let hasResponed = !!user.value?.response;
+        let isIdle = navigation.value === "idle"
+        let hasResponed = !!user.value?.response
         if (isIdle) {
-            return `${hasResponed ? 'Update' : 'Submit'} Response`;
+            return `${hasResponed ? "Update" : "Submit"} Response`
         } else {
-            return hasResponed ? 'Updating...' : 'Submitting...';
+            return hasResponed ? "Updating..." : "Submitting..."
         }
-    });
+    })
 
-    let buttonIsDisabled = useComputed(() => !isDirty.value || navigation.value !== 'idle');
+    let buttonIsDisabled = useComputed(() => !isDirty.value || navigation.value !== "idle")
 
     return (
         <SSRProvider>
@@ -90,7 +90,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                 onChange={$event =>
                     (selectedResponse.value = ($event as UserResponse | undefined) ?? undefined)
                 }
-                value={selectedResponse.value ?? ''}
+                value={selectedResponse.value ?? ""}
             >
                 <Label className="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0">
                     Can you make it?
@@ -132,7 +132,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                             id="response"
                             name="response"
                             type="hidden"
-                            value={selectedResponse.value ?? ''}
+                            value={selectedResponse.value ?? ""}
                         />
 
                         <div class="flex w-full flex-col divide-y divide-black/10 px-6 dark:divide-white/5">
@@ -157,8 +157,8 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                             <Show when={isYes.value}>
                                 <RadioGroup
                                     className="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
-                                    value={plusOne?.toString() ?? ''}
-                                    onChange={$event => (plusOne.value = $event === 'true')}
+                                    value={plusOne?.toString() ?? ""}
+                                    onChange={$event => (plusOne.value = $event === "true")}
                                     name="plus-one"
                                 >
                                     <div class="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
@@ -183,7 +183,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                             class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
                                             for="dietary-restrictions"
                                         >
-                                            Do you{' '}
+                                            Do you{" "}
                                             <Show when={!!plusOne.value}> or your plus-one </Show>
                                             have any dietary restrictions?
                                         </label>
@@ -217,7 +217,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                 disabled={buttonIsDisabled}
                                 type="submit"
                             >
-                                <Show when={navigation.value !== 'idle'}>
+                                <Show when={navigation.value !== "idle"}>
                                     <div role="status">
                                         <svg
                                             class="mr-2 h-4 w-4 animate-spin fill-gray-500 text-gray-400"
@@ -245,17 +245,17 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                 </div>
             </Show>
         </SSRProvider>
-    );
+    )
 }
 
 export namespace Rsvp {
     export interface Props {
-        user: User | null;
+        user: User | null
     }
 
     export const OPTIONS: RsvpButton.Option[] = [
-        { response: UserResponse.YES, icon: CheckIcon },
-        { response: UserResponse.MAYBE, icon: QuestionMarkCircleIcon },
-        { response: UserResponse.NO, icon: XMarkIcon },
-    ];
+        { response: UserResponse.YES, icon: CheckOutline },
+        { response: UserResponse.MAYBE, icon: QuestionMarkCircleOutline },
+        { response: UserResponse.NO, icon: XMarkOutline },
+    ]
 }

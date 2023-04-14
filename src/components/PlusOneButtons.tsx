@@ -1,8 +1,7 @@
-import { Label, Radio } from 'react-aria-components';
-
-import { CheckCircleIcon } from '@heroicons/react/20/solid';
-import { classList } from '../lib/classList';
-import { For } from './control-flow/For';
+import { CheckCircleSolid } from "preact-heroicons"
+import { Label, Radio } from "react-aria-components"
+import { classList } from "../lib/classList"
+import { For } from "./control-flow/For"
 
 export function PlusOneButtons() {
     return (
@@ -14,31 +13,31 @@ export function PlusOneButtons() {
                             <div
                                 class={classList(
                                     isSelected
-                                        ? 'border-transparent'
-                                        : 'border-gray-300 dark:border-gray-900',
-                                    'relative flex cursor-pointer rounded-lg border bg-white p-3 shadow-sm focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-900'
+                                        ? "border-transparent"
+                                        : "border-gray-300 dark:border-gray-900",
+                                    "relative flex cursor-pointer rounded-lg border bg-white p-3 shadow-sm focus:outline-none dark:bg-gray-950 dark:hover:bg-gray-900"
                                 )}
                             >
                                 <span class="flex flex-1">
                                     <span class="flex flex-col">
                                         <Label className="block text-sm font-medium text-gray-900 dark:text-gray-100">
-                                            {plusOne ? 'Yes' : 'No'}
+                                            {plusOne ? "Yes" : "No"}
                                         </Label>
                                     </span>
                                 </span>
-                                <CheckCircleIcon
+                                <CheckCircleSolid
                                     class={classList(
-                                        !isSelected ? 'invisible' : '',
-                                        'h-5 w-5 text-indigo-600 dark:text-indigo-700'
+                                        !isSelected ? "invisible" : "",
+                                        "h-5 w-5 text-indigo-600 dark:text-indigo-700"
                                     )}
                                     aria-hidden="true"
                                 />
                                 <span
                                     class={classList(
                                         isSelected
-                                            ? 'border-indigo-600 dark:border-indigo-700'
-                                            : 'border-transparent',
-                                        'pointer-events-none absolute -inset-px rounded-lg border-2'
+                                            ? "border-indigo-600 dark:border-indigo-700"
+                                            : "border-transparent",
+                                        "pointer-events-none absolute -inset-px rounded-lg border-2"
                                     )}
                                     aria-hidden="true"
                                 />
@@ -48,5 +47,5 @@ export function PlusOneButtons() {
                 )}
             </For>
         </div>
-    );
+    )
 }

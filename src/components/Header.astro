@@ -1,11 +1,11 @@
 ---
 export interface Props {
-    title: string;
-    image: string;
+    title: string
+    image: string
 }
 
-let { title, image } = Astro.props;
-let imageURL = `url(/${image})`;
+let { title, image } = Astro.props
+let imageURL = `url(/${image})`
 ---
 
 <div class="h-72 shadow-none sm:h-96 sm:rounded-lg sm:shadow">
@@ -23,7 +23,7 @@ let imageURL = `url(/${image})`;
     </div>
 </div>
 
-<style define:vars={{ 'hero-image': imageURL }}>
+<style define:vars={{ "hero-image": imageURL }}>
     .hero {
         background-image: var(--hero-image);
     }

@@ -1,25 +1,25 @@
 ---
-import type { Menu } from '../lib/menus.js';
-import Card from './Card.astro';
+import type { Menu } from "../lib/menus.js"
+import Card from "./Card.astro"
 
 export interface Props {
-    menu: Menu;
+    menu: Menu
 }
 
-let { menu } = Astro.props;
+let { menu } = Astro.props
 ---
 
 <Card>
     <div class="flex flex-col items-center justify-center gap-6 py-2">
         <h2 class="font-serif text-4xl font-extrabold capitalize text-gray-800 dark:text-gray-200">
-            {menu.title ?? 'Menu'}
+            {menu.title ?? "Menu"}
         </h2>
         <div class="flex flex-col gap-12">
             {
                 menu.items.map(item => (
                     <div class="flex flex-col items-center gap-6">
                         <img
-                            alt={item.imageAlt ?? ''}
+                            alt={item.imageAlt ?? ""}
                             class="inner-border h-64 w-full rounded object-cover"
                             src={item.imageUrl}
                         />
