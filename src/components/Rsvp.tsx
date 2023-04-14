@@ -1,7 +1,7 @@
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useComputed, useSignalEffect as useEffect, useSignal } from '@preact/signals';
 import type { User } from '@prisma/client/edge';
 import { Response as UserResponse } from '@prisma/client/edge';
-import { useEffect, useMemo, useState } from 'preact/hooks';
 import type { JSXInternal } from 'preact/src/jsx';
 import { Label, RadioGroup, SSRProvider } from 'react-aria-components';
 import { Form } from './Form';
@@ -14,42 +14,43 @@ type InputEvent = JSXInternal.TargetedEvent<HTMLInputElement, Event>;
 type TextAreaEvent = JSXInternal.TargetedEvent<HTMLTextAreaElement, Event>;
 
 export function Rsvp({ user: initialUser }: Rsvp.Props) {
-    let [user, setUser] = useState(initialUser ?? undefined);
+    let user = useSignal(initialUser ?? undefined);
 
-    let [navigation, setNavigation] = useState<Form.NavigationState>('idle');
+    let navigation = useSignal<Form.NavigationState>('idle');
 
-    let [selectedResponse, setSelectedResponse] = useState(user?.response);
+    let selectedResponse = useSignal(user.value?.response);
 
-    let [name, _setName] = useState(user?.name);
-    let [plusOne, setPlusOne] = useState(user?.plusOne);
-    let [dietaryRestrictions, _setDietaryRestrictions] = useState(user?.dietaryRestrictions);
+    let name = useSignal(user.value?.name);
+    let plusOne = useSignal(user.value?.plusOne);
+    let dietaryRestrictions = useSignal(user.value?.dietaryRestrictions);
 
-    const setName = ($event: InputEvent) => _setName($event.currentTarget.value);
+    const setName = ($event: InputEvent) => (name.value = $event.currentTarget.value);
     const setDietaryRestrictions = ($event: TextAreaEvent) =>
-        _setDietaryRestrictions($event.currentTarget.value);
+        (dietaryRestrictions.value = $event.currentTarget.value);
 
     useEffect(() => {
-        setSelectedResponse(user?.response ?? undefined);
-        _setName(user?.name);
-        setPlusOne(user?.plusOne);
-        _setDietaryRestrictions(user?.dietaryRestrictions);
-    }, [user]);
+        selectedResponse.value = user.value?.response ?? undefined;
+        name.value = user.value?.name;
+        plusOne.value = user.value?.plusOne;
+        dietaryRestrictions.value = user.value?.dietaryRestrictions;
+    });
 
-    let isDirty = useMemo(() => {
-        let responseChanged = selectedResponse !== user?.response;
-        let nameChanged = name !== user?.name;
-        let plusOneChanged = selectedResponse === UserResponse.YES && plusOne !== user?.plusOne;
+    let isDirty = useComputed(() => {
+        let responseChanged = selectedResponse.value !== user.value?.response;
+        let nameChanged = name.value !== user.value?.name;
+        let plusOneChanged =
+            selectedResponse.value === UserResponse.YES && plusOne.value !== user.value?.plusOne;
         let dietChanged =
-            selectedResponse === UserResponse.YES &&
-            dietaryRestrictions !== user?.dietaryRestrictions;
+            selectedResponse.value === UserResponse.YES &&
+            dietaryRestrictions.value !== user.value?.dietaryRestrictions;
         return responseChanged || nameChanged || plusOneChanged || dietChanged;
-    }, [selectedResponse, name, plusOne, dietaryRestrictions, user]);
+    });
 
-    let isYes = useMemo(() => selectedResponse === UserResponse.YES, [selectedResponse]);
-    let isSelected = useMemo(() => !!selectedResponse, [selectedResponse]);
+    let isYes = useComputed(() => selectedResponse.value === UserResponse.YES);
+    let isSelected = useComputed(() => !!selectedResponse.value);
 
-    let title = useMemo(() => {
-        switch (selectedResponse) {
+    let title = useComputed(() => {
+        switch (selectedResponse.value) {
             case UserResponse.YES:
                 return 'Hooray! 🥳';
             case UserResponse.MAYBE:
@@ -57,10 +58,10 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
             case UserResponse.NO:
                 return "We'll miss you! 🙁";
         }
-    }, [selectedResponse]);
+    });
 
-    let description = useMemo(() => {
-        switch (selectedResponse) {
+    let description = useComputed(() => {
+        switch (selectedResponse.value) {
             case UserResponse.YES:
                 return "I just need some info and then you'll be confirmed!";
             case UserResponse.MAYBE:
@@ -68,26 +69,28 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
             case UserResponse.NO:
                 return "Maybe we'll see you next time.";
         }
-    }, [selectedResponse]);
+    });
 
-    let buttonTitle = useMemo(() => {
-        let isIdle = navigation === 'idle';
-        let hasResponed = !!user?.response;
+    let buttonTitle = useComputed(() => {
+        let isIdle = navigation.value === 'idle';
+        let hasResponed = !!user.value?.response;
         if (isIdle) {
             return `${hasResponed ? 'Update' : 'Submit'} Response`;
         } else {
             return hasResponed ? 'Updating...' : 'Submitting...';
         }
-    }, [navigation, user]);
+    });
+
+    let buttonIsDisabled = useComputed(() => !isDirty.value || navigation.value !== 'idle');
 
     return (
         <SSRProvider>
             <RadioGroup
                 className="flex w-full flex-col items-center justify-center px-4 py-5 sm:flex-row sm:justify-between sm:px-6"
                 onChange={$event =>
-                    setSelectedResponse(($event as UserResponse | undefined) ?? undefined)
+                    (selectedResponse.value = ($event as UserResponse | undefined) ?? undefined)
                 }
-                value={selectedResponse ?? ''}
+                value={selectedResponse.value ?? ''}
             >
                 <Label className="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0">
                     Can you make it?
@@ -100,7 +103,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                 </div>
             </RadioGroup>
 
-            <Show when={isSelected}>
+            <Show when={isSelected.value}>
                 <hr className="border-t border-black/10 dark:border-white/5" />
 
                 <div className="py-6">
@@ -115,21 +118,21 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                         className="mt-5 flex w-full flex-col items-end"
                         action="/response"
                         method="POST"
-                        onState={$event => setNavigation($event)}
-                        onResponseData={$event => setUser($event)}
+                        onState={$event => (navigation.value = $event)}
+                        onResponseData={$event => (user.value = $event)}
                     >
                         <input
                             id="short-code"
                             name="short-code"
                             type="hidden"
-                            value={user?.shortCode}
+                            value={user.value?.shortCode}
                         />
 
                         <input
                             id="response"
                             name="response"
                             type="hidden"
-                            value={selectedResponse ?? ''}
+                            value={selectedResponse.value ?? ''}
                         />
 
                         <div className="flex w-full flex-col divide-y divide-black/10 px-6 dark:divide-white/5">
@@ -151,11 +154,11 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                 />
                             </div>
 
-                            <Show when={isYes}>
+                            <Show when={isYes.value}>
                                 <RadioGroup
                                     className="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
                                     value={plusOne?.toString() ?? ''}
-                                    onChange={$event => setPlusOne($event === 'true')}
+                                    onChange={$event => (plusOne.value = $event === 'true')}
                                     name="plus-one"
                                 >
                                     <div className="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
@@ -180,7 +183,8 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                                             className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50"
                                             htmlFor="dietary-restrictions"
                                         >
-                                            Do you <Show when={!!plusOne}> or your plus-one </Show>
+                                            Do you{' '}
+                                            <Show when={!!plusOne.value}> or your plus-one </Show>
                                             have any dietary restrictions?
                                         </label>
 
@@ -210,10 +214,10 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                         <div className="flex items-center justify-end gap-x-6 px-6 pb-2 pt-6">
                             <button
                                 className="flex flex-row items-center justify-center rounded-md px-3 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 enabled:bg-indigo-600 enabled:text-white enabled:shadow-sm enabled:hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 dark:enabled:bg-indigo-700 dark:enabled:hover:bg-indigo-600 dark:disabled:bg-gray-800 dark:disabled:text-slate-500"
-                                disabled={!isDirty || navigation !== 'idle'}
+                                disabled={buttonIsDisabled}
                                 type="submit"
                             >
-                                <Show when={navigation !== 'idle'} v-if="">
+                                <Show when={navigation.value !== 'idle'}>
                                     <div role="status">
                                         <svg
                                             className="mr-2 h-4 w-4 animate-spin fill-gray-500 text-gray-400"
