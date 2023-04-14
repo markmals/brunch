@@ -1,5 +1,5 @@
-import { RadioGroup } from '@headlessui/react';
 import { Response as UserResponse } from '@prisma/client/edge';
+import { Radio } from 'react-aria-components';
 import { classList } from '../lib/classList';
 
 export namespace RsvpButton {
@@ -20,11 +20,11 @@ function capitalize(phrase: string) {
 
 export function RsvpButton({ option }: RsvpButton.Props) {
     return (
-        <RadioGroup.Option
-            className={({ checked }) =>
+        <Radio
+            className={({ isSelected }) =>
                 classList(
                     'cursor-pointer rounded-md px-3 py-3 text-sm font-semibold shadow-sm sm:py-2',
-                    checked
+                    isSelected
                         ? option.response === UserResponse.YES
                             ? 'bg-green-600 text-white shadow-inner'
                             : option.response === UserResponse.NO
@@ -35,13 +35,13 @@ export function RsvpButton({ option }: RsvpButton.Props) {
             }
             value={option.response}
         >
-            {({ checked }) => {
+            {({ isSelected }) => {
                 const Icon = option.icon;
                 return (
                     <div className="flex select-none flex-row items-center justify-center gap-x-2">
                         <Icon
                             className={classList(
-                                checked ? 'text-white' : 'text-gray-500',
+                                isSelected ? 'text-white' : 'text-gray-500',
                                 'h-5 w-5'
                             )}
                         />
@@ -49,6 +49,6 @@ export function RsvpButton({ option }: RsvpButton.Props) {
                     </div>
                 );
             }}
-        </RadioGroup.Option>
+        </Radio>
     );
 }

@@ -1,8 +1,8 @@
-import { RadioGroup } from '@headlessui/react';
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import type { User } from '@prisma/client/edge';
 import { Response as UserResponse } from '@prisma/client/edge';
-import { FormEvent, Fragment, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { Label, RadioGroup, SSRProvider } from 'react-aria-components';
 import { Form } from './Form';
 import { PlusOneButtons } from './PlusOneButtons';
 import { RsvpButton } from './RsvpButton';
@@ -80,15 +80,17 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
     }, [navigation, user]);
 
     return (
-        <Fragment>
+        <SSRProvider>
             <RadioGroup
                 className="flex w-full flex-col items-center justify-center px-4 py-5 sm:flex-row sm:justify-between sm:px-6"
-                onChange={setSelectedResponse}
-                value={selectedResponse}
+                onChange={$event =>
+                    setSelectedResponse(($event as UserResponse | undefined) ?? undefined)
+                }
+                value={selectedResponse ?? ''}
             >
-                <RadioGroup.Label className="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0">
+                <Label className="mb-6 cursor-text text-base font-semibold leading-6 text-gray-900 dark:text-gray-50 sm:mb-0">
                     Can you make it?
-                </RadioGroup.Label>
+                </Label>
 
                 <div className="grid w-full grid-cols-1 items-center gap-y-6 sm:w-auto sm:grid-cols-3 sm:gap-x-4">
                     <For each={Rsvp.OPTIONS}>
@@ -151,21 +153,21 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                             <Show when={isYes}>
                                 <RadioGroup
                                     className="grid auto-rows-min pb-6 sm:grid-cols-2 sm:grid-rows-none sm:gap-4 sm:py-6"
-                                    value={plusOne}
-                                    onChange={setPlusOne}
+                                    value={plusOne?.toString() ?? ''}
+                                    onChange={$event => setPlusOne($event === 'true')}
                                     name="plus-one"
                                 >
                                     <div className="flex flex-col justify-center gap-2 py-4 sm:gap-0 sm:py-0">
-                                        <RadioGroup.Label className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50">
+                                        <Label className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-50">
                                             Will you be bringing a plus-one?
-                                        </RadioGroup.Label>
+                                        </Label>
 
-                                        <RadioGroup.Label
+                                        <Label
                                             className="text-sm text-gray-500"
                                             htmlFor="plus-one-description"
                                         >
                                             A guest who will not be responding seprately
-                                        </RadioGroup.Label>
+                                        </Label>
                                     </div>
 
                                     <PlusOneButtons />
@@ -237,7 +239,7 @@ export function Rsvp({ user: initialUser }: Rsvp.Props) {
                     </Form>
                 </div>
             </Show>
-        </Fragment>
+        </SSRProvider>
     );
 }
 

@@ -15,7 +15,7 @@ export async function post({ request }: APIContext) {
     let name = data.get('name') as string | null;
     invariant(name);
 
-    let plusOne = data.get('plus-one') === '1';
+    let plusOne = data.get('plus-one') === 'true';
     if (response !== 'YES') plusOne = false;
 
     let dietaryRestrictions = (data.get('dietary-restrictions') as string | null) ?? '';
