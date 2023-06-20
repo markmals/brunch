@@ -3,7 +3,8 @@ import Card from "../components/Card.astro"
 import Header from "../components/Header.astro"
 import InfoCard from "../components/InfoCard.astro"
 import Menu from "../components/Menu.astro"
-import { Rsvp } from "../components/Rsvp"
+// import { Rsvp } from "../components/Rsvp"
+import Rsvp from "../components/Rsvp.svelte"
 import { db } from "../lib/db.server"
 import { aprilBrunchMenu } from "../lib/menus"
 
@@ -43,7 +44,8 @@ if (!user) {
         <main class="mx-auto flex max-w-7xl flex-col gap-6 pb-10 sm:px-8 sm:py-10 lg:px-28">
             <Header image="mimosas.webp" title="Brunch" />
             <Card class="p-0">
-                <Rsvp user={user} client:load />
+                <!-- <Rsvp user={user} client:load /> -->
+                <Rsvp initialUser={user} client:load />
             </Card>
 
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
